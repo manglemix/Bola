@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+const LIFETIME := 2.0
+const START_VELOCITY := 50.0
+const VELOCITY_CONE := deg2rad(30)
+
+var linear_velocity: Vector2
+var current_lifetime := 0.0
+
+
+func _ready():
+	linear_velocity = Vector2.UP.rotated(rand_range(-VELOCITY_CONE, VELOCITY_CONE)) * START_VELOCITY
+
+
+func _process(delta):
+	global_position += linear_velocity * delta
+	current_lifetime += delta
+	modulate.a = lerp(1, 0, inverse_lerp(0, LIFETIME, current_lifetime))
+	if current_lifetime >= LIFETIME:
+		queue_free()
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 1, 0.219608, 0.219608, 1 )
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Too Steep!"

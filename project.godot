@@ -1,0 +1,123 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Barrier",
+"language": "GDScript",
+"path": "res://barriers/barrier.gd"
+}, {
+"base": "RigidBody2D",
+"class": "BouncyBall",
+"language": "GDScript",
+"path": "res://agents/bouncy_ball.gd"
+}, {
+"base": "RigidBody2D",
+"class": "BreakableBarrier",
+"language": "GDScript",
+"path": "res://barriers/breakable_barrier.gd"
+}, {
+"base": "Area2D",
+"class": "EndPortal",
+"language": "GDScript",
+"path": "res://levels/end_portal.gd"
+}, {
+"base": "BouncyBall",
+"class": "Player",
+"language": "GDScript",
+"path": "res://agents/player.gd"
+}, {
+"base": "Node2D",
+"class": "RandomBarrierGrid",
+"language": "GDScript",
+"path": "res://barriers/random_barrier_grid.gd"
+}, {
+"base": "Node",
+"class": "Replayer",
+"language": "GDScript",
+"path": "res://agents/replayer.gd"
+}, {
+"base": "RigidBody2D",
+"class": "RotatableBarrier",
+"language": "GDScript",
+"path": "res://barriers/rotatable_barrier.gd"
+}, {
+"base": "RigidBody2D",
+"class": "SuperBouncyBarrier",
+"language": "GDScript",
+"path": "res://barriers/super_bouncy_barrier.gd"
+}, {
+"base": "Node2D",
+"class": "UserInput",
+"language": "GDScript",
+"path": "res://agents/user_input.gd"
+} ]
+_global_script_class_icons={
+"Barrier": "",
+"BouncyBall": "",
+"BreakableBarrier": "",
+"EndPortal": "",
+"Player": "",
+"RandomBarrierGrid": "",
+"Replayer": "",
+"RotatableBarrier": "",
+"SuperBouncyBarrier": "",
+"UserInput": ""
+}
+
+[application]
+
+config/name="Bola"
+run/main_scene="res://levels/main_menu.tscn"
+config/icon="res://icon.png"
+config/quit_on_go_back=false
+
+[autoload]
+
+GameState="*res://autoloads/game_state.gd"
+Replays="*res://autoloads/replays.gd"
+
+[display]
+
+window/size/width=600
+window/size/height=1024
+window/dpi/allow_hidpi=true
+window/handheld/orientation="sensor"
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
+[gui]
+
+theme/custom_font="res://quicksand.tres"
+
+[input]
+
+jump={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
+ ]
+}
+fullscreen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":70,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/physics_fps=120
+common/enable_pause_aware_picking=true
+2d/default_gravity=980
+
+[rendering]
+
+misc/mesh_storage/split_stream=true
+environment/default_environment="res://default_env.tres"

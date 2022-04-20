@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://agents/agent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://agents/replayer.gd" type="Script" id=2]
+[ext_resource path="res://agents/player.gd" type="Script" id=3]
+
+[node name="Replayer" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="Replayer" type="Node" parent="." index="2"]
+script = ExtResource( 2 )
+
+[node name="Particles2D" parent="Node" index="0"]
+local_coords = false
+
+[connection signal="end_jump" from="Replayer" to="." method="cancel_jump"]
+[connection signal="try_jump" from="Replayer" to="." method="jump_to"]

@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="JumpIcon" type="Polygon2D"]
+polygon = PoolVector2Array( -5, 23, -5, -11, -14, -3, -21, -10, 0, -31, 21, -10, 14, -3, 5, -11, 5, 23 )
