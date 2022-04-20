@@ -9,6 +9,8 @@ script/source = "extends Node2D
 
 
 func _ready():
+	Replays.load_replay(\"replay9.log\")
+	return
 	if not GameState.save_exists():
 		get_node(\"Continue\").queue_free()
 	

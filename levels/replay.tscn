@@ -20,8 +20,9 @@ func _notification(what):
 
 
 func _go_back():
-	GameState.started = false
-	get_tree().change_scene(\"res://levels/main_menu.tscn\")
+	get_tree().quit()
+#	GameState.started = false
+#	get_tree().change_scene(\"res://levels/main_menu.tscn\")
 "
 
 [node name="RandomBarrierGrid" type="Node2D"]
