@@ -13,5 +13,7 @@ script = ExtResource( 2 )
 [node name="Particles2D" parent="Node" index="0"]
 local_coords = false
 
+[connection signal="correct_origin" from="Replayer" to="." method="set_global_position"]
 [connection signal="end_jump" from="Replayer" to="." method="cancel_jump"]
+[connection signal="set_velocity" from="Replayer" to="." method="set_linear_velocity"]
 [connection signal="try_jump" from="Replayer" to="." method="jump_to"]

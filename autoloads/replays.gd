@@ -75,9 +75,9 @@ func get_replay_dict() -> Dictionary:
 	}
 
 
-func log_jump_start(frames: int, origin: Vector2):
-	logs[frames] = [JUMP_START, origin]
+func log_jump_start(frames: int, to: Vector2, origin: Vector2, velocity: Vector2):
+	logs[frames] = [JUMP_START, to, origin, velocity]
 
 
-func log_jump_end(frames: int):
-	logs[frames] = JUMP_STOPPED
+func log_jump_end(frames: int, origin: Vector2, velocity: Vector2):
+	logs[frames] = [JUMP_STOPPED, origin, velocity]

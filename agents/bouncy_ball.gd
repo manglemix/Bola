@@ -29,6 +29,7 @@ var _current_jump_duration := 0.0
 
 
 func _physics_process(delta):
+	angular_velocity = 0
 	if jumping:
 		emit_signal("jumping", jumping_vec.angle())
 		

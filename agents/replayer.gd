@@ -4,6 +4,8 @@ extends Node
 
 signal try_jump(origin)
 signal end_jump
+signal correct_origin(origin)
+signal set_velocity(vel)
 
 var jump_times: Array
 var jump_enums: Array
@@ -22,11 +24,14 @@ func _physics_process(_delta):
 	if count - 1 != jump_times[0]: return
 	jump_times.pop_front()
 	var jump_data = jump_enums.pop_front()
-	if jump_data is Array:
-		assert(jump_data[0] == Replays.JUMP_START)
+	if jump_data[0] == Replays.JUMP_START:
+		emit_signal("correct_origin", jump_data[2])
+		emit_signal("set_velocity", jump_data[3])
 		emit_signal("try_jump", jump_data[1])
 	else:
-		assert(jump_data == Replays.JUMP_STOPPED)
+		assert(jump_data[0] == Replays.JUMP_STOPPED)
+		emit_signal("correct_origin", jump_data[1])
+		emit_signal("set_velocity", jump_data[2])
 		emit_signal("end_jump")
 	if jump_times.empty():
 		set_physics_process(false)
