@@ -71,7 +71,7 @@ func won():
 	var gain := _height_change(current_time, false)
 	level_height += gain
 	_start_time = current_time
-	Replays.send_replay()
+	Replays.save_replay()
 	yield(get_tree(), "idle_frame")
 	Replays.reset()
 

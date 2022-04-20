@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://barriers/barrier.gd" type="Script" id=1]
 [ext_resource path="res://agents/replayer.tscn" type="PackedScene" id=2]
@@ -25,6 +25,24 @@ func _go_back():
 #	get_tree().change_scene(\"res://levels/main_menu.tscn\")
 "
 
+[sub_resource type="GDScript" id=4]
+script/source = "extends Player
+
+
+func _ready():
+	yield(self, \"fell_out\")
+	get_tree().change_scene(get_tree().current_scene.filename)
+"
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends EndPortal
+
+
+func _ready():
+	yield(self, \"portal_reached\")
+	get_tree().change_scene(get_tree().current_scene.filename)
+"
+
 [node name="RandomBarrierGrid" type="Node2D"]
 script = SubResource( 2 )
 player_path = NodePath("Replayer")
@@ -35,13 +53,15 @@ script = ExtResource( 1 )
 dimensions = Vector2( 500, 20 )
 
 [node name="Replayer" parent="." instance=ExtResource( 2 )]
-position = Vector2( 0, -201 )
+position = Vector2( 0, -150 )
+script = SubResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="Replayer"]
 current = true
 
 [node name="Portal" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -2500 )
+script = SubResource( 3 )
 _target_node_path = NodePath("../Replayer")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -67,5 +87,3 @@ position = Vector2( -100, 41 )
 
 [node name="JumpIcon2" parent="CanvasLayer/VBoxContainer/HBoxContainer/Control" instance=ExtResource( 5 )]
 position = Vector2( -40, 42 )
-
-[connection signal="portal_reached" from="Portal" to="." method="portal_reached"]

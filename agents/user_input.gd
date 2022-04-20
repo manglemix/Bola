@@ -13,7 +13,7 @@ var start_count := 0
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("jump"):
 		var viewport := get_viewport()
-		var origin := get_global_mouse_position().snapped(Vector2.ONE * 0.01)
+		var origin := get_global_mouse_position().snapped(Vector2.ONE * 0.1)
 		emit_signal("try_jump", origin)
 		if record_input:
 			Replays.log_jump_start(start_count, origin)
