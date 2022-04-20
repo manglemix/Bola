@@ -57,7 +57,6 @@ func lost():
 	win_streak = 0
 	var current_time := OS.get_system_time_secs()
 	var loss := _height_change(current_time, true)
-	prints("lost", round(loss), "height")
 	level_height -= loss
 	_start_time = current_time
 	Replays.reset()
@@ -70,7 +69,6 @@ func won():
 	reset_data()
 	var current_time := OS.get_system_time_secs()
 	var gain := _height_change(current_time, false)
-	prints("gained", round(gain), "height")
 	level_height += gain
 	_start_time = current_time
 	Replays.send_replay()
