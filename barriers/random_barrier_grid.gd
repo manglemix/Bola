@@ -3,6 +3,7 @@ extends Node2D
 
 
 export var max_barrier_count := 50
+export var grid_start_height := 200.0
 export var grid_step := 50.0
 export var grid_width = 1000.0
 export var max_barrier_steps_bounds := 3
@@ -30,11 +31,12 @@ func _ready():
 	var barrier_transforms := []
 	var barrier_count := 0
 	var barrier_points := _existing_barrier_points.duplicate()
+	var i := 0
 	
-	for i in range(max_barrier_count):
+	while i < max_barrier_count:
 		var origin := Vector2(
 			stepify(_rng.randf_range(- grid_width / 2, grid_width / 2), grid_step),
-			stepify(_rng.randf_range(0, - GameState.level_height), grid_step)
+			stepify(_rng.randf_range(-grid_start_height, - GameState.level_height), grid_step)
 		)
 		
 		var barrier
@@ -56,11 +58,11 @@ func _ready():
 		
 		var extents := Vector2.ZERO
 		
-		while extents.length_squared() == 0:
+		while extents.length_squared() == 0 or origin.y + extents.y > - grid_start_height:
 			extents =  Vector2(
 				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds)),
-				round(_rng.randf_range(- max_barrier_steps_bounds, max_barrier_steps_bounds))
-			)
+				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds))
+			) * grid_step
 		
 		if is_point_between_array(origin, barrier_points) and is_point_between_array(extents, barrier_points):
 			barrier.free()
@@ -70,15 +72,16 @@ func _ready():
 			barrier.free()
 			continue
 		
+		i += 1
 		if barrier is RotatableBarrier:
 			GameState.add_rotatable(barrier, i)
 		
 		barrier_points.append([origin, extents])
 		var barrier_transform: Transform2D = Barrier.calculate_dimensions(
 			origin,
-			origin + extents * grid_step
+			origin + extents
 		)
-		var barrier_length := extents.length() * grid_step
+		var barrier_length := extents.length()
 		barrier.dimensions = Vector2(barrier_length, barrier_thickness)
 		barrier.transform = barrier_transform
 		
@@ -95,18 +98,14 @@ func _ready():
 	barrier_meshes.instance_count = barrier_count
 	barrier_meshes.mesh.size = Vector2(barrier_thickness, barrier_thickness)
 	
-	for i in range(barrier_transforms.size()):
-		barrier_meshes.set_instance_transform_2d(i, barrier_transforms[i])
+	for j in range(barrier_transforms.size()):
+		barrier_meshes.set_instance_transform_2d(j, barrier_transforms[j])
 	
 	var barrier_meshes_node := MultiMeshInstance2D.new()
 	barrier_meshes_node.multimesh = barrier_meshes
 	add_child(barrier_meshes_node)
 	
 #	if not GameState.loading_from_disk: GameState.save()
-
-
-func portal_reached():
-	GameState.won()
 
 
 static func is_point_between(point: Vector2, from: Vector2, to: Vector2) -> bool:

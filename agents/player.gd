@@ -15,8 +15,6 @@ func _ready():
 	add_child(_too_steep_delay_timer)
 	connect("jump_started", self, "_try_vibrate")
 	connect("not_landed", self, "_on_not_landed")
-	yield(self, "fell_out")
-	GameState.lost()
 
 
 func _try_vibrate(_null):
