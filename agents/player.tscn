@@ -11,6 +11,3 @@ controller_path = NodePath("UserInput")
 [node name="UserInput" type="Node2D" parent="." index="2"]
 script = ExtResource( 2 )
 record_input = true
-
-[node name="Particles2D" parent="Node" index="0"]
-local_coords = false

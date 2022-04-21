@@ -21,8 +21,6 @@ func _notification(what):
 
 
 func _go_back():
-	GameState.save()
-	GameState.reset_data()
 	GameState.started = false
 	get_tree().change_scene(\"res://levels/main_menu.tscn\")
 "
@@ -101,6 +99,7 @@ current = true
 position = Vector2( 0, -2500 )
 script = SubResource( 6 )
 _target_node_path = NodePath("../Player")
+grav_coeff = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
