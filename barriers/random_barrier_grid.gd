@@ -21,11 +21,6 @@ var _rng_counter := 0.0
 func _ready():
 	GameState.player = get_node(player_path)
 	_rng.seed = GameState.get_seed()
-	if GameState.loading_from_disk:
-		_rng.seed = GameState.current_seed
-		GameState.player.transform.origin = GameState.player_position
-		GameState.player.linear_velocity = GameState.player_velocity
-		GameState.player.current_jumps = GameState.player_jumps
 	
 	prints("Using seed:", _rng.seed)
 	var barrier_transforms := []
@@ -47,8 +42,6 @@ func _ready():
 			
 		elif _rng.randf() < rotatable_frac:
 			barrier = RotatableBarrier.new()
-			if GameState.loading_from_disk:
-				get_tree().connect("idle_frame", barrier, "set_rotation", [GameState.rotatables_rotation[i]], CONNECT_ONESHOT)
 			
 		elif _rng.randf() < bouncy_frac:
 			barrier = SuperBouncyBarrier.new()

@@ -1,31 +1,25 @@
-[gd_scene load_steps=13 format=2]
-
-[ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
-[ext_resource path="res://barriers/barrier.gd" type="Script" id=2]
-[ext_resource path="res://agents/player.tscn" type="PackedScene" id=3]
+[gd_scene load_steps=2 format=2]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Node2D
 
 
 func _ready():
-#	Replays.load_replay(\"replay17.log\")
-#	return
+#	Replays.load_replay(\"replay22.log\")
+	new_game(null)
+	return
 	if not GameState.save_exists():
 		get_node(\"Continue\").queue_free()
-	
-	if OS.has_feature(\"NoExit\"):
-		set_process_input(false)
 
 
 func _input(event):
 	if event.is_action_pressed(\"ui_cancel\"):
-		get_tree().quit()
+		_go_back()
 
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST or what == MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
-		get_tree().quit()
+		_go_back()
 
 
 func new_game(_body):
@@ -37,181 +31,18 @@ func new_game(_body):
 func continue_game(body):
 	GameState.try_load_save()
 	new_game(body)
+
+
+func _go_back():
+	if OS.has_feature(\"NoExit\"): return
+	get_tree().quit()
 "
-
-[sub_resource type="GDScript" id=9]
-script/source = "extends Player
-
-
-const NEW_GAME_NAME := \"NewGame\"
-
-
-func _physics_process(_delta):
-	if global_position.y > 500:
-		get_tree().change_scene(\"res://levels/main_menu.tscn\")
-
-
-func _on_collision(node: PhysicsBody2D):
-	if node.name == NEW_GAME_NAME:
-		get_parent().new_game(null)
-"
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 50, 10 )
-
-[sub_resource type="QuadMesh" id=2]
-size = Vector2( 100, 20 )
-
-[sub_resource type="DynamicFont" id=7]
-size = 32
-font_data = ExtResource( 1 )
-
-[sub_resource type="Theme" id=8]
-default_font = SubResource( 7 )
-
-[sub_resource type="GDScript" id=6]
-script/source = "extends RigidBody2D
-
-
-onready var _start_origin := transform.origin
-onready var _label: Label = $Label
-
-
-func _ready():
-	if not OS.has_touchscreen_ui_hint(): queue_free()
-	if GameState.vibrating:
-		rotation_degrees = 15
-		_label.text = \"Vibration ON\"
-	else:
-		rotation_degrees = - 15
-		_label.text = \"Vibration OFF\"
-
-
-func _integrate_forces(state: Physics2DDirectBodyState):
-	if rotation_degrees > 15:
-		rotation_degrees = 15
-		angular_velocity = 0
-		GameState.vibrating = true
-		_label.text = \"Vibration ON\"
-	
-	elif rotation_degrees < -15:
-		rotation_degrees = -15
-		angular_velocity = 0
-		GameState.vibrating = false
-		_label.text = \"Vibration OFF\"
-	
-	linear_velocity = Vector2.ZERO
-"
-
-[sub_resource type="QuadMesh" id=4]
-size = Vector2( 200, 20 )
-
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 100, 10 )
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
 
-[node name="Barrier" type="StaticBody2D" parent="."]
-script = ExtResource( 2 )
-dimensions = Vector2( 500, 20 )
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, -200 )
-script = SubResource( 9 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 0, -200 )
-current = true
-
-[node name="NewGame" type="RigidBody2D" parent="."]
-position = Vector2( -222, -31 )
-rotation = 0.785398
-collision_layer = 0
-mode = 3
-contacts_reported = 1
-contact_monitor = true
-sleeping = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NewGame"]
-shape = SubResource( 1 )
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="NewGame"]
-position = Vector2( -1.81979, -1.81982 )
-mesh = SubResource( 2 )
-
-[node name="RichTextLabel" type="Label" parent="NewGame"]
-margin_left = -152.028
-margin_top = 10.6066
-margin_right = 29.972
-margin_bottom = 51.6066
-rect_min_size = Vector2( 80, 0 )
-rect_rotation = -45.0
-theme = SubResource( 8 )
-text = "New Game"
-
-[node name="Continue" type="RigidBody2D" parent="."]
-position = Vector2( 222, -31 )
-rotation = -0.785398
-collision_layer = 0
-mode = 3
-contacts_reported = 1
-contact_monitor = true
-sleeping = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Continue"]
-shape = SubResource( 1 )
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Continue"]
-position = Vector2( 1.81976, -1.81982 )
-mesh = SubResource( 2 )
-
-[node name="RichTextLabel2" type="Label" parent="Continue"]
-margin_left = 55.8615
-margin_top = -82.7315
-margin_right = 199.861
-margin_bottom = -41.7315
-rect_min_size = Vector2( 80, 0 )
-rect_rotation = 45.0
-theme = SubResource( 8 )
-text = "Continue"
-
-[node name="Switch" type="RigidBody2D" parent="."]
-position = Vector2( 0, -280 )
-mass = 10.0
-gravity_scale = 0.0
-contacts_reported = 1
-contact_monitor = true
-can_sleep = false
-linear_damp = 100.0
-script = SubResource( 6 )
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Switch"]
-mesh = SubResource( 4 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Switch"]
-shape = SubResource( 5 )
-
-[node name="Label" type="Label" parent="Switch"]
-margin_left = -53.0
-margin_top = -39.0
-margin_right = 54.0
-margin_bottom = -23.0
-text = "Vibration ON"
-align = 1
-
-[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
-position = Vector2( 0, -280 )
-node_a = NodePath("../Switch")
-node_b = NodePath("../StaticBody2D")
-length = 10.0
-stiffness = 50.0
-damping = 5.0
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( 0, -280 )
-
-[connection signal="body_entered" from="NewGame" to="." method="new_game"]
-[connection signal="body_entered" from="Continue" to="." method="continue_game"]
-
-[editable path="Player"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
