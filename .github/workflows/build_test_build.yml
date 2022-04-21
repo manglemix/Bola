@@ -38,6 +38,6 @@ jobs:
       env:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: html5
-        ITCH_GAME: Bola
+        ITCH_GAME: BolaTest
         ITCH_USER: manglemix
         PACKAGE: exports/html5
