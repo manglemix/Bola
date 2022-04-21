@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Node",
 "class": "AgentController",
 "language": "GDScript",
 "path": "res://agents/agent_controller.gd"
@@ -119,7 +119,6 @@ fullscreen={
 
 [physics]
 
-common/physics_fps=120
 common/enable_pause_aware_picking=true
 2d/default_gravity=980
 

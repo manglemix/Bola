@@ -8,6 +8,9 @@ var jump_times: Array
 var jump_enums: Array
 var collisions: Array
 
+var global_position: Vector2
+var linear_velocity: Vector2
+
 
 func _ready():
 	var jump_log := Replays.logs
@@ -16,55 +19,49 @@ func _ready():
 	collisions = Replays.collision_logs.duplicate()
 
 
-func _physics_process(_delta):
-	if count != jump_times[0]: return
+func poll_mutation(_delta: float, ball):
+	if jump_times.empty(): return
+	if _frame_counter != jump_times[0]:
+		_increment_counter()
+		return
+	
 	jump_times.pop_front()
 	var jump_data: Array = jump_enums.pop_front()
+	global_position = ball.global_position
+	linear_velocity = ball.linear_velocity
 	
 	match jump_data[0]:
 		Replays.JUMP_START:
 			if origin_check(jump_data[2]):
 				emit_signal("invalid_move")
-			emit_signal("correct_origin", jump_data[2])
+			ball.global_position = jump_data[2]
 
 			if velocity_check(jump_data[3]):
 				emit_signal("invalid_move")
-			emit_signal("correct_velocity", jump_data[3])
+			ball.linear_velocity = jump_data[3]
 			
-			emit_signal("try_jump", jump_data[1])
+			ball.jump_to(jump_data[1])
+			ball.snap_all()
 		
 		Replays.JUMP_STOPPED:
 			if origin_check(jump_data[1]):
 				emit_signal("invalid_move")
-			emit_signal("correct_origin", jump_data[1])
+			ball.global_position = jump_data[1]
 
 			if velocity_check(jump_data[2]):
 				emit_signal("invalid_move")
-			emit_signal("correct_velocity", jump_data[2])
+			ball.linear_velocity = jump_data[2]
 			
-			emit_signal("end_jump")
+			ball.cancel_jump()
 		
-	if jump_times.empty():
-		set_physics_process(false)
+	_increment_counter()
 
 
 func origin_check(new_origin: Vector2):
 	prints("o", new_origin.distance_to(global_position))
-	return new_origin.distance_to(global_position) > 0.1
+	return new_origin.distance_to(global_position) > 0.15
 
 
 func velocity_check(new_vel: Vector2):
 	prints("v", new_vel.distance_to(linear_velocity))
-	return new_vel.distance_to(linear_velocity) > 0.1
-
-
-func _on_body_entered(body):
-	yield(get_tree(), "physics_frame")
-#	var data: Array = collisions.pop_front()
-#	if origin_check(data[0]):
-#		emit_signal("invalid_move")
-#	emit_signal("correct_origin", data[0])
-#
-#	if velocity_check(data[1]):
-#		emit_signal("invalid_move")
-#	emit_signal("correct_velocity", data[1])
+	return new_vel.distance_to(linear_velocity) > 0.15

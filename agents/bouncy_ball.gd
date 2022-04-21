@@ -65,9 +65,17 @@ func cancel_jump():
 	emit_signal("jumped")
 
 
+func snap_all(snap_size:=0.1):
+	var snap := Vector2.ONE * snap_size
+	linear_velocity = linear_velocity.snapped(snap)
+	global_position = global_position.snapped(snap)
+
+
 func _physics_process(delta: float):
 	linear_velocity += Vector2.DOWN * gravity * delta
 	linear_velocity -= linear_velocity * linear_velocity * drag_modifier * delta
+	
+	_controller.poll_mutation(delta, self)
 	
 	if jumping:
 		emit_signal("jumping", jumping_vec.angle())
@@ -114,6 +122,7 @@ func _physics_process(delta: float):
 				emit_signal("landed")
 				landed = true
 		
+		snap_all()
 		_on_collision(result.collider)
 		emit_signal("collided_with", result.collider)
 		
@@ -129,8 +138,6 @@ func _physics_process(delta: float):
 	var speed := linear_velocity.length()
 	if speed > MAX_SPEED:
 		linear_velocity *= MAX_SPEED / speed
-	
-#	_controller.linear_velocity = linear_velocity
 
 
 func _on_collision(node: PhysicsBody2D):

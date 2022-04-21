@@ -1,20 +1,19 @@
 class_name AgentController
-extends Node2D
+extends Node
 
 
-signal try_jump(to)
-signal end_jump
-signal correct_origin(origin)
-signal correct_velocity(vel)
-
-var linear_velocity := Vector2.ZERO
-var count := 0
+var _frame_counter := 0
 
 
-func _ready():
-	assert(position == Vector2.ZERO)
+func _increment_counter():
+	_frame_counter += 1
 
 
-func _physics_process(_delta):
-	count += 1
-	linear_velocity = get_parent().linear_velocity
+# Called after gravity and drag but before collisions
+func poll_mutation(delta: float, ball) -> void:
+	_increment_counter()
+
+
+# Called at the very end of the physics frame
+func poll_observe(ball) -> void:
+	return

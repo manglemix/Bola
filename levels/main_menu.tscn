@@ -9,7 +9,7 @@ script/source = "extends Node2D
 
 
 func _ready():
-	Replays.load_replay(\"replay11.log\")
+	Replays.load_replay(\"replay17.log\")
 	return
 	if not GameState.save_exists():
 		get_node(\"Continue\").queue_free()
@@ -119,7 +119,6 @@ dimensions = Vector2( 500, 20 )
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, -200 )
 script = SubResource( 9 )
-controller_path = NodePath("")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -200 )
@@ -214,3 +213,5 @@ position = Vector2( 0, -280 )
 
 [connection signal="body_entered" from="NewGame" to="." method="new_game"]
 [connection signal="body_entered" from="Continue" to="." method="continue_game"]
+
+[editable path="Player"]
