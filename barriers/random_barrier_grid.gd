@@ -68,13 +68,13 @@ func _ready():
 			barrier.free()
 			continue
 		
-		if GameState.loading_from_disk and i in GameState.idx_to_skip:
-			barrier.free()
-			continue
+#		if GameState.loading_from_disk and i in GameState.idx_to_skip:
+#			barrier.free()
+#			continue
 		
 		i += 1
-		if barrier is RotatableBarrier:
-			GameState.add_rotatable(barrier, i)
+#		if barrier is RotatableBarrier:
+#			GameState.add_rotatable(barrier, i)
 		
 		barrier_points.append([origin, extents])
 		var barrier_transform: Transform2D = Barrier.calculate_dimensions(
@@ -85,7 +85,7 @@ func _ready():
 		barrier.dimensions = Vector2(barrier_length, barrier_thickness)
 		barrier.transform = barrier_transform
 		
-		if barrier is Barrier:
+		if barrier is Barrier and not barrier is SuperBouncyBarrier:
 			barrier.make_mesh = false
 			barrier_transform.x *= barrier_length / barrier_thickness
 			barrier_transforms.append(barrier_transform)

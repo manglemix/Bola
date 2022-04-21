@@ -6,6 +6,7 @@
 
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+controller_path = NodePath("UserInput")
 
 [node name="UserInput" type="Node2D" parent="." index="2"]
 script = ExtResource( 2 )
@@ -13,8 +14,3 @@ record_input = true
 
 [node name="Particles2D" parent="Node" index="0"]
 local_coords = false
-
-[connection signal="correct_origin" from="UserInput" to="." method="set_global_position"]
-[connection signal="correct_vel" from="UserInput" to="." method="set_linear_velocity"]
-[connection signal="end_jump" from="UserInput" to="." method="cancel_jump"]
-[connection signal="try_jump" from="UserInput" to="." method="jump_to"]

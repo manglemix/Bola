@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://barriers/barrier.gd" type="Script" id=2]
@@ -9,6 +9,8 @@ script/source = "extends Node2D
 
 
 func _ready():
+#	Replays.load_replay(\"replay17.log\")
+#	return
 	if not GameState.save_exists():
 		get_node(\"Continue\").queue_free()
 	
@@ -35,6 +37,23 @@ func new_game(_body):
 func continue_game(body):
 	GameState.try_load_save()
 	new_game(body)
+"
+
+[sub_resource type="GDScript" id=9]
+script/source = "extends Player
+
+
+const NEW_GAME_NAME := \"NewGame\"
+
+
+func _physics_process(_delta):
+	if global_position.y > 500:
+		get_tree().change_scene(\"res://levels/main_menu.tscn\")
+
+
+func _on_collision(node: PhysicsBody2D):
+	if node.name == NEW_GAME_NAME:
+		get_parent().new_game(null)
 "
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -99,6 +118,7 @@ dimensions = Vector2( 500, 20 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, -200 )
+script = SubResource( 9 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -200 )
@@ -193,3 +213,5 @@ position = Vector2( 0, -280 )
 
 [connection signal="body_entered" from="NewGame" to="." method="new_game"]
 [connection signal="body_entered" from="Continue" to="." method="continue_game"]
+
+[editable path="Player"]
