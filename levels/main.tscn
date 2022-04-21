@@ -99,7 +99,6 @@ current = true
 position = Vector2( 0, -2500 )
 script = SubResource( 6 )
 _target_node_path = NodePath("../Player")
-grav_coeff = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
