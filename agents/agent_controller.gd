@@ -10,10 +10,10 @@ func _increment_counter():
 
 
 # Called after gravity and drag but before collisions
-func poll_mutation(delta: float, ball) -> void:
+func poll_mutation(_delta: float, _ball) -> void:
 	_increment_counter()
 
 
 # Called at the very end of the physics frame
-func poll_observe(ball) -> void:
+func poll_observe(_ball) -> void:
 	return
