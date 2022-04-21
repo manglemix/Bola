@@ -11,6 +11,7 @@ export var dimensions := Vector2.ONE * 20
 
 
 func _ready():
+	set_physics_process(false)
 	mass = DENSITY * dimensions.x * dimensions.y
 	modulate.g = 0.5
 	modulate.b = 0.5
@@ -22,7 +23,7 @@ func _ready():
 	contact_monitor = true
 	contacts_reported = 1
 	collision_mask = 1
-	mode = MODE_KINEMATIC
+	mode = MODE_STATIC
 	var shape_node := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
 	shape.extents = dimensions / 2
@@ -30,17 +31,16 @@ func _ready():
 	add_child(shape_node)
 
 
-func _integrate_forces(state):
-	for i in state.get_contact_count():
-		var impulse_vec: Vector2 = state.get_contact_collider_object(i).mass * state.get_contact_collider_velocity_at_position(i)
-		if impulse_vec.length() / mass > MIN_WAKE_UP_ACCEL:
-			emit_signal("broken")
-			contact_monitor = false
-			var rel_vec: Vector2 = state.get_contact_collider_position(i) - global_position
-			set_deferred("mode", MODE_RIGID)
-			yield(get_tree(), "idle_frame")
-			call_deferred("apply_impulse", rel_vec, impulse_vec)
-	
-	if sleeping: return
+func apply_impulse(offset: Vector2, impulse: Vector2):
+	if impulse.length() / mass > MIN_WAKE_UP_ACCEL:
+		emit_signal("broken")
+		contact_monitor = false
+		mode = MODE_RIGID
+		set_physics_process(true)
+		yield(get_tree(), "idle_frame")
+		.apply_impulse(offset, impulse)
+
+
+func _physics_process(_delta):
 	if global_position.y > 500:
 		queue_free()

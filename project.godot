@@ -9,12 +9,17 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "AgentController",
+"language": "GDScript",
+"path": "res://agents/agent_controller.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Barrier",
 "language": "GDScript",
 "path": "res://barriers/barrier.gd"
 }, {
-"base": "RigidBody2D",
+"base": "KinematicBody2D",
 "class": "BouncyBall",
 "language": "GDScript",
 "path": "res://agents/bouncy_ball.gd"
@@ -39,7 +44,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/random_barrier_grid.gd"
 }, {
-"base": "Node",
+"base": "AgentController",
 "class": "Replayer",
 "language": "GDScript",
 "path": "res://agents/replayer.gd"
@@ -49,17 +54,18 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/rotatable_barrier.gd"
 }, {
-"base": "RigidBody2D",
+"base": "Barrier",
 "class": "SuperBouncyBarrier",
 "language": "GDScript",
 "path": "res://barriers/super_bouncy_barrier.gd"
 }, {
-"base": "Node2D",
+"base": "AgentController",
 "class": "UserInput",
 "language": "GDScript",
 "path": "res://agents/user_input.gd"
 } ]
 _global_script_class_icons={
+"AgentController": "",
 "Barrier": "",
 "BouncyBall": "",
 "BreakableBarrier": "",

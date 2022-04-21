@@ -6,10 +6,11 @@ const REPLAYS_PATH := "user://replays/"
 
 enum {
 	JUMP_START,
-	JUMP_STOPPED
+	JUMP_STOPPED,
 }
 
 var logs := {}
+var collision_logs := []
 
 
 func _ready():
@@ -39,15 +40,17 @@ func _ready():
 
 func reset():
 	logs.clear()
+	collision_logs.clear()
 
 
 func load_replay(replay_name: String):
 	var file := File.new()
-	file.open(REPLAYS_PATH + replay_name, File.READ)
+	file.open_compressed(REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP)
 	file.get_16()
 	var data: Dictionary = file.get_var()
 	file.close()
 	logs = data["jumps"]
+	collision_logs = data["collisions"]
 	GameState.current_seed = data["seed"]
 	GameState.tmp_seed = true
 	get_tree().change_scene("res://levels/replay.tscn")
@@ -61,7 +64,7 @@ func save_replay():
 		idx += 1
 		file_path = REPLAYS_PATH + "replay" + str(idx) + ".log"
 
-	file.open(file_path, File.WRITE)
+	file.open_compressed(file_path, File.WRITE, File.COMPRESSION_GZIP)
 	file.store_16(REPLAY_VERSION)
 	file.store_var(get_replay_dict())
 	file.close()
@@ -71,7 +74,8 @@ func get_replay_dict() -> Dictionary:
 	return {
 		"save_version": GameState.SAVE_SYSTEM_VERSION,
 		"seed": GameState.current_seed,
-		"jumps": logs
+		"jumps": logs,
+		"collisions": collision_logs
 	}
 
 
@@ -81,3 +85,7 @@ func log_jump_start(frames: int, to: Vector2, origin: Vector2, velocity: Vector2
 
 func log_jump_end(frames: int, origin: Vector2, velocity: Vector2):
 	logs[frames] = [JUMP_STOPPED, origin, velocity]
+
+
+func log_collision(origin: Vector2, velocity: Vector2):
+	collision_logs.append([origin, velocity])

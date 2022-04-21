@@ -2,6 +2,7 @@ class_name BouncyBall
 extends KinematicBody2D
 
 
+const MAX_COLLISIONS := 5
 const MAX_SPEED := 1500.0
 const RESET_SPEED := 10.0
 
@@ -19,7 +20,9 @@ export var max_jumps := 2
 export var max_floor_angle_degrees := 60.0
 export var bounce_min_velocity := 90.0
 export var controller_path: NodePath
-export var bounce_modifier := 0.8
+export var bounce_modifier := 0.6
+export var drag_modifier := 0.00001
+export var mass := 1.0
 
 var jumping := false
 var jumping_vec: Vector2
@@ -29,6 +32,10 @@ var linear_velocity := Vector2.ZERO
 
 onready var _controller: AgentController = get_node(controller_path)
 onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+
+func set_linear_velocity(velocity: Vector2):
+	linear_velocity = velocity
 
 
 func _ready():
@@ -60,6 +67,7 @@ func cancel_jump():
 
 func _physics_process(delta: float):
 	linear_velocity += Vector2.DOWN * gravity * delta
+	linear_velocity -= linear_velocity * linear_velocity * drag_modifier * delta
 	
 	if jumping:
 		emit_signal("jumping", jumping_vec.angle())
@@ -77,22 +85,30 @@ func _physics_process(delta: float):
 	var collision_count := 0
 	var collision_normal_sum := Vector2.ZERO
 	
-	while travel > 0:
+	while travel > 0 and collision_count < MAX_COLLISIONS:
 		var travel_vec := linear_velocity.normalized() * travel
 		var result := move_and_collide(travel_vec, false)
 		if result == null:
 			break
 		
-		var bounce_vec := linear_velocity.project(result.normal)
-		linear_velocity += (- bounce_modifier - 1) * bounce_vec
+		collision_count += 1
+		collision_normal_sum += result.normal
 		
-		if linear_velocity.length() < RESET_SPEED:
-			linear_velocity = linear_velocity.slide(result.normal)
+		var bounce_vec: Vector2
 		
-		travel -= result.travel.length()
+		if result.collider is SuperBouncyBarrier:
+			bounce_vec = linear_velocity.project(result.normal) * (1 + bounce_modifier * SuperBouncyBarrier.BOUNCE_FACTOR)
+		else:
+			bounce_vec = linear_velocity.project(result.normal) * (1 + bounce_modifier)
+			if result.collider is RigidBody2D:
+				if result.collider is RotatableBarrier:
+					bounce_vec *= exp(- result.position.distance_to(result.collider.global_position) / 100)
+					
+				result.collider.apply_impulse(result.position - result.collider.global_position, bounce_vec * mass)
+		
+		linear_velocity -= bounce_vec
+		
 		if not landed:
-			collision_count += 1
-			collision_normal_sum += result.normal
 			if abs((collision_normal_sum / collision_count).angle_to(Vector2.UP)) < deg2rad(max_floor_angle_degrees):
 				current_jumps = 0
 				emit_signal("landed")
@@ -100,6 +116,12 @@ func _physics_process(delta: float):
 		
 		_on_collision(result.collider)
 		emit_signal("collided_with", result.collider)
+		
+		if linear_velocity.length() < RESET_SPEED:
+			linear_velocity = Vector2.ZERO
+			break
+		
+		travel -= result.travel.length()
 	
 	if collision_count > 0 and not landed:
 		emit_signal("not_landed", abs((collision_normal_sum / collision_count).angle_to(Vector2.UP)))
