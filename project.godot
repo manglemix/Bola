@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/barrier.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "RigidBody2D",
 "class": "BouncyBall",
 "language": "GDScript",
 "path": "res://agents/bouncy_ball.gd"
@@ -44,7 +44,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/random_barrier_grid.gd"
 }, {
-"base": "AgentController",
+"base": "Node",
 "class": "Replayer",
 "language": "GDScript",
 "path": "res://agents/replayer.gd"
@@ -59,7 +59,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/super_bouncy_barrier.gd"
 }, {
-"base": "AgentController",
+"base": "Node2D",
 "class": "UserInput",
 "language": "GDScript",
 "path": "res://agents/user_input.gd"
@@ -119,6 +119,7 @@ fullscreen={
 
 [physics]
 
+common/physics_fps=120
 common/enable_pause_aware_picking=true
 2d/default_gravity=980
 

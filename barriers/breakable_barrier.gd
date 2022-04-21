@@ -20,8 +20,8 @@ func _ready():
 	mesh_node.mesh.size = dimensions
 	add_child(mesh_node)
 	collision_layer = 0
-	contact_monitor = true
-	contacts_reported = 1
+#	contact_monitor = true
+#	contacts_reported = 1
 	collision_mask = 1
 	mode = MODE_STATIC
 	var shape_node := CollisionShape2D.new()

@@ -2,7 +2,7 @@ class_name SuperBouncyBarrier
 extends Barrier
 
 
-const BOUNCE_FACTOR := 5.0
+const BOUNCE_FACTOR := 4.0
 
 
 func _ready():
