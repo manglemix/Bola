@@ -2,7 +2,7 @@
 on: 
   push:
     branches:
-      - master
+      - test-build
 
 jobs:
   # job id, can be anything
