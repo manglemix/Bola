@@ -87,7 +87,6 @@ func _physics_process(delta: float):
 			emit_signal("jumped")
 #		_controller.linear_velocity = linear_velocity
 	
-	var in_velocity := linear_velocity
 	var travel := linear_velocity.length() * delta
 	var landed := false
 	var collision_count := 0
@@ -140,5 +139,5 @@ func _physics_process(delta: float):
 		linear_velocity *= MAX_SPEED / speed
 
 
-func _on_collision(node: PhysicsBody2D):
+func _on_collision(_node: PhysicsBody2D):
 	pass
