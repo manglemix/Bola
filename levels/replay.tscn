@@ -29,9 +29,9 @@ func _go_back():
 script/source = "extends Player
 
 
-func _ready():
-	yield(self, \"fell_out\")
-	get_tree().change_scene(get_tree().current_scene.filename)
+#func _ready():
+#	yield(self, \"fell_out\")
+#	get_tree().change_scene(get_tree().current_scene.filename)
 "
 
 [sub_resource type="GDScript" id=3]

@@ -37,9 +37,13 @@ onready var jump_icon2: Node2D = get_node(\"../CanvasLayer/VBoxContainer/HBoxCon
 
 
 func _ready():
-	connect(\"fell_out\", GameState, \"lost\")
 	yield(get_tree(), \"idle_frame\")
 	_on_jumping(null)		# if we loaded from disk, we shld update the icons
+
+
+func _physics_process(_delta):
+	if global_position.y > 500:
+		GameState.lost()
 
 
 func _on_landed():
