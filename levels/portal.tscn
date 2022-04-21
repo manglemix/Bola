@@ -1,34 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://levels/end_portal.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 78.2624
 
-[sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0.652174, 1 )
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0.325967, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
-
-[sub_resource type="ParticlesMaterial" id=4]
-lifetime_randomness = 0.2
-flag_disable_z = true
-spread = 180.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 175.0
-angular_velocity = 310.59
-angular_velocity_random = 0.28
-orbit_velocity = 0.4
-orbit_velocity_random = 0.2
-linear_accel = 300.0
-linear_accel_random = 0.2
-scale = 3.0
-color_ramp = SubResource( 3 )
-
-[sub_resource type="CircleShape2D" id=5]
-radius = 150.0
 
 [node name="Portal" type="Area2D"]
 script = ExtResource( 2 )
@@ -36,21 +15,19 @@ script = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Particles2D" type="Particles2D" parent="."]
+[node name="Particles2D" type="CPUParticles2D" parent="."]
 amount = 400
-lifetime = 1.2
+lifetime = 2.0
 preprocess = 5.0
-randomness = 0.15
-visibility_rect = Rect2( -375, -375, 750, 750 )
-process_material = SubResource( 4 )
-
-[node name="Area2D" type="Area2D" parent="."]
-space_override = 1
-gravity_point = true
-gravity_vec = Vector2( 0, 0 )
-gravity = 4000.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 5 )
+randomness = 0.2
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 175.0
+initial_velocity_random = 0.3
+tangential_accel = 100.0
+angle = 90.0
+angle_random = 1.0
+scale_amount = 3.0
+color_ramp = SubResource( 6 )
 
 [connection signal="body_entered" from="." to="." method="_on_Portal_body_entered"]

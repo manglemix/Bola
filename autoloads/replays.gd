@@ -72,7 +72,6 @@ func save_replay():
 
 func get_replay_dict() -> Dictionary:
 	return {
-		"save_version": GameState.SAVE_SYSTEM_VERSION,
 		"seed": GameState.current_seed,
 		"jumps": logs,
 		"collisions": collision_logs

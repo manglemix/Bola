@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://agents/bouncy_ball.gd" type="Script" id=1]
 
@@ -8,29 +8,12 @@
 radius = 10.0
 height = 20.0
 
-[sub_resource type="Gradient" id=4]
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=5]
-gradient = SubResource( 4 )
-
-[sub_resource type="ParticlesMaterial" id=6]
-flag_disable_z = true
-direction = Vector3( -1, 0, 0 )
-spread = 30.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 300.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-linear_accel = -200.0
-angle = 90.0
-angle_random = 1.0
-scale = 5.0
-scale_random = 0.5
-color_ramp = SubResource( 5 )
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0.364641, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.0662983 )
 
 [sub_resource type="GDScript" id=7]
-script/source = "extends Particles2D
+script/source = "extends CPUParticles2D
 
 
 func emit(direction):
@@ -54,12 +37,23 @@ mesh = SubResource( 2 )
 
 [node name="Node" type="Node" parent="."]
 
-[node name="Particles2D" type="Particles2D" parent="Node"]
+[node name="Particles2D" type="CPUParticles2D" parent="Node"]
 emitting = false
 amount = 30
 lifetime = 0.4
-randomness = 0.3
-process_material = SubResource( 6 )
+one_shot = true
+randomness = 0.4
+lifetime_randomness = 0.5
+local_coords = false
+direction = Vector2( -1, 0 )
+spread = 90.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 0.3
+angle = 90.0
+angle_random = 1.0
+scale_amount = 3.0
+color_ramp = SubResource( 8 )
 script = SubResource( 7 )
 
 [connection signal="jumped" from="." to="Node/Particles2D" method="cancel"]

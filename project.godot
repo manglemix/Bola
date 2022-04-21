@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/barrier.gd"
 }, {
-"base": "RigidBody2D",
+"base": "KinematicBody2D",
 "class": "BouncyBall",
 "language": "GDScript",
 "path": "res://agents/bouncy_ball.gd"
