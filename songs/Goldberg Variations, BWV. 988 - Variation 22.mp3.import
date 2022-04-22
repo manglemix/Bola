@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Goldberg Variations, BWV. 988 - Variation 22.mp3-dfa2fd5b02b5d990aad6dc4a09aaaa51.mp3str"
+
+[deps]
+
+source_file="res://songs/Goldberg Variations, BWV. 988 - Variation 22.mp3"
+dest_files=[ "res://.import/Goldberg Variations, BWV. 988 - Variation 22.mp3-dfa2fd5b02b5d990aad6dc4a09aaaa51.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

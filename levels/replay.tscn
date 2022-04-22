@@ -56,9 +56,9 @@ _target_node_path = NodePath("../Replayer")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BackButton" parent="CanvasLayer" instance=ExtResource( 3 )]
-margin_left = 40.0
+margin_left = 30.0
 margin_top = 20.0
-margin_right = 140.0
+margin_right = 95.0
 margin_bottom = 120.0
 rect_rotation = 180.0
 rect_scale = Vector2( 0.75, 0.75 )
