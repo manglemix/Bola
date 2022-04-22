@@ -15,8 +15,6 @@ var replays_dir := Directory.new()
 var has_replays := false
 var thumbnail: PoolByteArray
 
-var _img_thread: Thread
-
 
 func _ready():
 	if not replays_dir.dir_exists(REPLAYS_PATH):
@@ -55,21 +53,8 @@ func reset():
 	logs.clear()
 
 
-func _exit_tree():
-	if _img_thread == null or not _img_thread.is_active(): return
-	_img_thread.wait_to_finish()
-
-
 func capture_thumbnail():
-	if _img_thread != null and _img_thread.is_active():
-		_img_thread.wait_to_finish()
-	
-	_img_thread = Thread.new()
-	# warning-ignore:return_value_discarded
-	_img_thread.start(self, "_process_img", get_viewport().get_texture().get_data())
-
-
-func _process_img(img: Image):
+	var img := get_viewport().get_texture().get_data()
 	var img_size := img.get_size()
 	# warning-ignore-all:narrowing_conversion
 	if img_size.x > img_size.y:
@@ -86,7 +71,6 @@ func _process_img(img: Image):
 	atlas.region = Rect2((img_size - Vector2.ONE * ICON_SIZE) / 2, Vector2.ONE * ICON_SIZE)
 	img = atlas.get_data()
 	img.flip_y()
-#	img.crop(400, 400)
 	thumbnail = img.save_png_to_buffer()
 
 
@@ -117,8 +101,6 @@ func save_replay() -> bool:
 
 
 func get_replay_dict() -> Dictionary:
-	if _img_thread != null:
-		_img_thread.wait_to_finish()
 	return {
 		"seed": GameState.current_seed,
 		"jumps": logs,
