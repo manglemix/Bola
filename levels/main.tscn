@@ -170,3 +170,4 @@ position = Vector2( -40, 42 )
 
 [connection signal="jumping" from="Player" to="Player" method="_on_jumping"]
 [connection signal="landed" from="Player" to="Player" method="_on_landed"]
+[connection signal="tree_exited" from="CanvasLayer/VBoxContainer/HBoxContainer2/Control/BackButton" to="CanvasLayer/VBoxContainer/HBoxContainer2/Control" method="queue_free"]
