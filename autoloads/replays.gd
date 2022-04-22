@@ -74,13 +74,12 @@ func capture_thumbnail():
 	thumbnail = img.save_png_to_buffer()
 
 
-func load_replay(replay: Replay) -> bool:
+func load_replay(replay: Replay):
 	GameState.current_seed = replay.level_seed
 	logs = replay.logs
 	GameState.tmp_seed = true
 	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://levels/replay.tscn")
-	return true
 
 
 func save_replay() -> bool:
