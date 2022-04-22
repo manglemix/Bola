@@ -47,6 +47,7 @@ func won():
 	win_streak += 1
 	var current_time := OS.get_system_time_secs()
 	_start_time = current_time
+	# warning-ignore:return_value_discarded
 	Replays.save_replay()
 	yield(get_tree(), "idle_frame")
 	Replays.reset()

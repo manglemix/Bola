@@ -6,11 +6,6 @@
 script/source = "extends TextureButton
 
 
-func _ready():
-	if OS.has_feature(\"Android\") or not OS.has_feature(\"mobile\"):
-		queue_free()
-
-
 func _on_TextureButton_pressed():
 	var action := InputEventAction.new()
 	action.action = \"ui_cancel\"
