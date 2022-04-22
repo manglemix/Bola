@@ -4,7 +4,6 @@ extends KinematicBody2D
 
 const MAX_COLLISIONS := 5
 const MAX_SPEED := 1500.0
-const BOUNCE_RESET_SPEED := 20.0
 
 signal not_landed(angle)
 signal landed
@@ -23,7 +22,7 @@ export var controller_path: NodePath
 export var bounce_modifier := 0.6
 export var drag_modifier := 0.00001
 export var mass := 1.0
-export var friction_decel := 300.0
+export var friction_decel := 500.0
 
 var jumping := false
 var jumping_vec: Vector2
@@ -111,24 +110,9 @@ func _physics_process(delta: float):
 			bounce_vec *= factor
 			cancel_vec *= factor
 			
-			if bounce_vec.length() <= BOUNCE_RESET_SPEED:
-				bounce_vec = Vector2.ZERO
-			
 			result.collider.apply_impulse(result.position - result.collider.global_position, (cancel_vec + bounce_vec) * mass)
 		
-		var zero_bounce := false
-		if bounce_vec.length() <= BOUNCE_RESET_SPEED:
-			bounce_vec = Vector2.ZERO
-			zero_bounce = true
-		
 		linear_velocity -= bounce_vec + cancel_vec
-		
-		if zero_bounce:
-			var step := friction_decel * delta
-			if linear_velocity.length() < step:
-				linear_velocity = Vector2.ZERO
-			else:
-				linear_velocity -= linear_velocity.normalized() * step
 		
 		if not landed:
 			if abs((collision_normal_sum / collision_count).angle_to(Vector2.UP)) < deg2rad(max_floor_angle_degrees):
@@ -142,7 +126,9 @@ func _physics_process(delta: float):
 		
 		travel -= result.travel.length()
 	
-	if collision_count > 0 and not landed:
+	if landed:
+		linear_velocity -= linear_velocity.normalized() * friction_decel * delta
+	elif collision_count > 0:
 		emit_signal("not_landed", abs((collision_normal_sum / collision_count).angle_to(Vector2.UP)))
 	
 	var speed := linear_velocity.length()
