@@ -94,6 +94,7 @@ func load_replay(replay: Replay) -> bool:
 	GameState.current_seed = replay.level_seed
 	logs = replay.logs
 	GameState.tmp_seed = true
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://levels/replay.tscn")
 	return true
 

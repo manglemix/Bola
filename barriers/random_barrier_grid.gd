@@ -56,24 +56,30 @@ func _ready():
 				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds))
 			) * grid_step
 		
-		if is_point_between_array(origin, barrier_points) and is_point_between_array(extents, barrier_points):
+		extents += origin
+		var origin_result := is_point_between_array(origin, barrier_points)
+		var extent_result := is_point_between_array(extents, barrier_points)
+		
+		if origin_result[0] and extent_result[0]:
 			barrier.free()
 			continue
 		
-#		if GameState.loading_from_disk and i in GameState.idx_to_skip:
-#			barrier.free()
-#			continue
+		if origin_result[0] != extent_result[0]:
+			if origin_result[0]:
+				if is_point_between(origin_result[1], origin, extents) or is_point_between(origin_result[2], origin, extents):
+					barrier.free()
+					continue
+			elif is_point_between(extent_result[1], origin, extents) or is_point_between(extent_result[2], origin, extents):
+				barrier.free()
+				continue
 		
 		i += 1
-#		if barrier is RotatableBarrier:
-#			GameState.add_rotatable(barrier, i)
-		
 		barrier_points.append([origin, extents])
 		var barrier_transform: Transform2D = Barrier.calculate_dimensions(
 			origin,
-			origin + extents
+			extents
 		)
-		var barrier_length := extents.length()
+		var barrier_length := origin.distance_to(extents)
 		barrier.dimensions = Vector2(barrier_length, barrier_thickness)
 		barrier.transform = barrier_transform
 		
@@ -106,8 +112,8 @@ static func is_point_between(point: Vector2, from: Vector2, to: Vector2) -> bool
 	return true
 
 
-static func is_point_between_array(point: Vector2, array: Array) -> bool:
+static func is_point_between_array(point: Vector2, array: Array) -> Array:
 	for arr in array:
 		if is_point_between(point, arr[0], arr[1]):
-			return true
-	return false
+			return [true, arr[0], arr[1]]
+	return [false]
