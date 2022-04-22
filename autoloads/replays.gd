@@ -3,6 +3,7 @@ extends Node
 
 const REPLAY_VERSION := 1
 const REPLAYS_PATH := "user://replays/"
+const ICON_SIZE := 200
 
 enum {
 	JUMP_START,
@@ -12,6 +13,9 @@ enum {
 var logs := {}
 var replays_dir := Directory.new()
 var has_replays := false
+var thumbnail: PoolByteArray
+
+var _img_thread: Thread
 
 
 func _ready():
@@ -51,17 +55,43 @@ func reset():
 	logs.clear()
 
 
-func load_replay(replay_name: String) -> bool:
-	var file := File.new()
-	if file.open_compressed(REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP) != OK:
-		return false
+func _exit_tree():
+	if _img_thread == null or not _img_thread.is_active(): return
+	_img_thread.wait_to_finish()
+
+
+func capture_thumbnail():
+	if _img_thread != null and _img_thread.is_active():
+		_img_thread.wait_to_finish()
 	
-	# warning-ignore-all:return_value_discarded
-	file.get_16()
-	var data: Dictionary = file.get_var()
-	file.close()
-	logs = data["jumps"]
-	GameState.current_seed = data["seed"]
+	_img_thread = Thread.new()
+	_img_thread.start(self, "_process_img", get_viewport().get_texture().get_data())
+
+
+func _process_img(img: Image):
+	var img_size := img.get_size()
+	# warning-ignore-all:narrowing_conversion
+	if img_size.x > img_size.y:
+		img.resize(round(img_size.x * ICON_SIZE / img_size.y), ICON_SIZE, Image.INTERPOLATE_NEAREST)
+	else:
+		img.resize(ICON_SIZE, round(img_size.y * ICON_SIZE / img_size.x), Image.INTERPOLATE_NEAREST)
+	
+	img_size = img.get_size()
+	var tex := ImageTexture.new()
+	tex.create_from_image(img)
+	var atlas := AtlasTexture.new()
+	
+	atlas.atlas = tex
+	atlas.region = Rect2((img_size - Vector2.ONE * ICON_SIZE) / 2, Vector2.ONE * ICON_SIZE)
+	img = atlas.get_data()
+	img.flip_y()
+#	img.crop(400, 400)
+	thumbnail = img.save_png_to_buffer()
+
+
+func load_replay(replay: Replay) -> bool:
+	GameState.current_seed = replay.level_seed
+	logs = replay.logs
 	GameState.tmp_seed = true
 	get_tree().change_scene("res://levels/replay.tscn")
 	return true
@@ -85,10 +115,13 @@ func save_replay() -> bool:
 
 
 func get_replay_dict() -> Dictionary:
+	if _img_thread != null:
+		_img_thread.wait_to_finish()
 	return {
 		"seed": GameState.current_seed,
 		"jumps": logs,
-		"date": OS.get_datetime()
+		"date": OS.get_datetime(),
+		"thumbnail": thumbnail
 	}
 
 

@@ -26,7 +26,7 @@ func _ready():
 func get_seed():
 	if not tmp_seed:
 		current_seed = randi()
-		tmp_seed = false
+	tmp_seed = false
 	return current_seed
 
 

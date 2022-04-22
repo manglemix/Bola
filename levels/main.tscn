@@ -11,6 +11,12 @@
 script/source = "extends RandomBarrierGrid
 
 
+func _ready():
+	yield(get_tree(), \"idle_frame\")
+	yield(get_tree(), \"idle_frame\")
+	Replays.capture_thumbnail()
+
+
 func _input(event):
 	if event.is_action_pressed(\"ui_cancel\"):
 		_go_back()

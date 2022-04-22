@@ -10,6 +10,3 @@ controller_path = NodePath("Replayer")
 
 [node name="Replayer" type="Node2D" parent="." index="2"]
 script = ExtResource( 2 )
-
-[node name="Particles2D" parent="Node" index="0"]
-local_coords = false

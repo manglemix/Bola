@@ -28,10 +28,6 @@ margin_bottom = 100.0
 texture_normal = ExtResource( 1 )
 script = SubResource( 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 560.0
-alignment = 2
-
 [connection signal="button_down" from="." to="." method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="." to="." method="_on_TextureButton_button_up"]
 [connection signal="pressed" from="." to="." method="_on_TextureButton_pressed"]

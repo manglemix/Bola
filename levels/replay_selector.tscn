@@ -35,14 +35,24 @@ default_font = SubResource( 4 )
 script/source = "extends ItemList
 
 
+var replays := []
+
+
 func _ready():
 	# warning-ignore:return_value_discarded
 	Replays.replays_dir.list_dir_begin(true)
 	
 	var replay_name := Replays.replays_dir.get_next()
 	while not replay_name.empty():
-		add_item(replay_name)
+		var replay := Replay.new()
+		replay.parse_replay(replay_name)
+		add_item(replay.name, replay.icon)
+		replays.append(replay)
 		replay_name = Replays.replays_dir.get_next()
+
+
+func _on_ItemList_item_activated(index: int):
+	Replays.load_replay(replays[index])
 "
 
 [node name="Control" type="VBoxContainer"]
@@ -104,3 +114,5 @@ layer = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 128.0
+
+[connection signal="item_activated" from="ItemList" to="ItemList" method="_on_ItemList_item_activated"]
