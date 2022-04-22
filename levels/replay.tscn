@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://barriers/barrier.gd" type="Script" id=1]
 [ext_resource path="res://agents/replayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/back_button.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/portal.tscn" type="PackedScene" id=4]
-[ext_resource path="res://ui/jump_icon.tscn" type="PackedScene" id=5]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends RandomBarrierGrid
@@ -20,18 +20,7 @@ func _notification(what):
 
 
 func _go_back():
-	get_tree().quit()
-#	GameState.started = false
-#	get_tree().change_scene(\"res://levels/main_menu.tscn\")
-"
-
-[sub_resource type="GDScript" id=4]
-script/source = "extends Player
-
-
-#func _ready():
-#	yield(self, \"fell_out\")
-#	get_tree().change_scene(get_tree().current_scene.filename)
+	get_tree().change_scene(\"res://levels/replay_selector.tscn\")
 "
 
 [sub_resource type="GDScript" id=3]
@@ -40,6 +29,7 @@ script/source = "extends EndPortal
 
 func _ready():
 	yield(self, \"portal_reached\")
+	GameState.tmp_seed = true
 	get_tree().change_scene(get_tree().current_scene.filename)
 "
 
@@ -54,7 +44,6 @@ dimensions = Vector2( 500, 20 )
 
 [node name="Replayer" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -150 )
-script = SubResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="Replayer"]
 current = true
@@ -66,24 +55,11 @@ _target_node_path = NodePath("../Replayer")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-visible = false
-anchor_right = 1.0
+[node name="BackButton" parent="CanvasLayer" instance=ExtResource( 3 )]
 margin_left = 40.0
 margin_top = 20.0
-margin_right = -20.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
-margin_right = 964.0
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
-margin_left = 964.0
-margin_right = 964.0
-
-[node name="JumpIcon" parent="CanvasLayer/VBoxContainer/HBoxContainer/Control" instance=ExtResource( 5 )]
-position = Vector2( -100, 41 )
-
-[node name="JumpIcon2" parent="CanvasLayer/VBoxContainer/HBoxContainer/Control" instance=ExtResource( 5 )]
-position = Vector2( -40, 42 )
+margin_right = 140.0
+margin_bottom = 120.0
+rect_rotation = 180.0
+rect_scale = Vector2( 0.75, 0.75 )
+rect_pivot_offset = Vector2( 50, 50 )
