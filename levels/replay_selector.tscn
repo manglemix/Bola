@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://ui/back_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends VBoxContainer
+
+
+func _input(event):
+	if event.is_action_pressed(\"ui_cancel\"):
+		# warning-ignore:return_value_discarded
+		get_tree().change_scene(\"res://levels/main_menu.tscn\")
+"
+
+[sub_resource type="DynamicFont" id=5]
+size = 64
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=6]
+default_font = SubResource( 5 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 48
+extra_spacing_top = 10
+extra_spacing_bottom = 10
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 4 )
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends ItemList
+
+
+func _ready():
+	# warning-ignore:return_value_discarded
+	Replays.replays_dir.list_dir_begin(true)
+	
+	var replay_name := Replays.replays_dir.get_next()
+	while not replay_name.empty():
+		add_item(replay_name)
+		replay_name = Replays.replays_dir.get_next()
+"
+
+[node name="Control" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+script = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 560.0
+margin_bottom = 100.0
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_right = 100.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="BackButton" parent="HBoxContainer/Control" instance=ExtResource( 1 )]
+margin_left = 0.0
+rect_rotation = 180.0
+rect_scale = Vector2( 0.75, 0.75 )
+rect_pivot_offset = Vector2( 50, 50 )
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 104.0
+margin_top = 21.0
+margin_right = 560.0
+margin_bottom = 79.0
+size_flags_horizontal = 3
+theme = SubResource( 6 )
+text = "Replays"
+align = 2
+
+[node name="Control" type="Control" parent="."]
+margin_top = 104.0
+margin_right = 560.0
+margin_bottom = 114.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="ItemList" type="ItemList" parent="."]
+margin_top = 118.0
+margin_right = 560.0
+margin_bottom = 984.0
+focus_mode = 0
+size_flags_vertical = 3
+theme = SubResource( 3 )
+custom_styles/bg = SubResource( 7 )
+script = SubResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 128.0

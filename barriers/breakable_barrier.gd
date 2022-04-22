@@ -5,8 +5,6 @@ extends RigidBody2D
 const DENSITY := 1.0 / 500
 const MIN_WAKE_UP_ACCEL := 150.0
 
-signal broken
-
 export var dimensions := Vector2.ONE * 20
 
 
@@ -33,7 +31,6 @@ func _ready():
 
 func apply_impulse(offset: Vector2, impulse: Vector2):
 	if impulse.length() / mass > MIN_WAKE_UP_ACCEL:
-		emit_signal("broken")
 		contact_monitor = false
 		mode = MODE_RIGID
 		set_physics_process(true)

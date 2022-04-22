@@ -22,7 +22,7 @@ func _on_Portal_body_entered(body):
 		emit_signal("portal_reached")
 
 
-func _physics_process(delta: float):
+func _physics_process(_delta):
 	var vec := global_position - _target_node.global_position
 	if vec.length() > grav_distance: return
 	_target_node.linear_velocity += vec.normalized() * grav_factor * pow(grav_distance - vec.length(), 2)
