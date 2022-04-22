@@ -65,6 +65,7 @@ func capture_thumbnail():
 		_img_thread.wait_to_finish()
 	
 	_img_thread = Thread.new()
+	# warning-ignore:return_value_discarded
 	_img_thread.start(self, "_process_img", get_viewport().get_texture().get_data())
 
 
