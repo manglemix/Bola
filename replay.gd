@@ -8,9 +8,11 @@ var logs: Dictionary
 var level_seed: int
 
 
-func parse_replay(replay_name: String):
+func parse_replay(replay_name: String) -> int:
 	var file := File.new()
-	file.open_compressed(Replays.REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP)
+	var err := file.open_compressed(Replays.REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP)
+	if err != OK:
+		return err
 	# warning-ignore:return_value_discarded
 	file.get_16()
 	var data: Dictionary = file.get_var()
@@ -21,6 +23,9 @@ func parse_replay(replay_name: String):
 	name = str(date["day"]) + "-" + str(date["month"]) + "-" + str(date["year"]).right(2) + "  " + str(date["hour"]) + ":" + str(date["minute"])
 	
 	var img := Image.new()
-	img.load_png_from_buffer(data["thumbnail"])
+	err = img.load_png_from_buffer(data["thumbnail"])
+	if err != OK:
+		return err
 	icon = ImageTexture.new()
 	icon.create_from_image(img)
+	return OK
