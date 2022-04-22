@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Goldberg Variations, BWV 988 - 10 - Variatio 9 a 1 Clav. Canone alla Terza.mp3-cee341605ab5d3566c88b3a689769114.mp3str"
+
+[deps]
+
+source_file="res://songs/Goldberg Variations, BWV 988 - 10 - Variatio 9 a 1 Clav. Canone alla Terza.mp3"
+dest_files=[ "res://.import/Goldberg Variations, BWV 988 - 10 - Variatio 9 a 1 Clav. Canone alla Terza.mp3-cee341605ab5d3566c88b3a689769114.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

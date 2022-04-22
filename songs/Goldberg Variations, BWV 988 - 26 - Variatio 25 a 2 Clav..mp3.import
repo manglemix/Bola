@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Goldberg Variations, BWV 988 - 26 - Variatio 25 a 2 Clav..mp3-9e4fadc317fbb1e8977c443555f77834.mp3str"
+
+[deps]
+
+source_file="res://songs/Goldberg Variations, BWV 988 - 26 - Variatio 25 a 2 Clav..mp3"
+dest_files=[ "res://.import/Goldberg Variations, BWV 988 - 26 - Variatio 25 a 2 Clav..mp3-9e4fadc317fbb1e8977c443555f77834.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
