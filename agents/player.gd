@@ -13,6 +13,7 @@ func _ready():
 	_too_steep_delay_timer = Timer.new()
 	_too_steep_delay_timer.one_shot = true
 	add_child(_too_steep_delay_timer)
+	# warning-ignore-all:return_value_discarded
 	connect("jump_started", self, "_try_vibrate")
 	connect("not_landed", self, "_on_not_landed")
 

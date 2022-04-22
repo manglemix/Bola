@@ -31,6 +31,7 @@ func get_seed():
 
 
 func lost():
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(get_tree().current_scene.filename)
 	if not started: return
 	win_streak = 0
@@ -40,6 +41,7 @@ func lost():
 
 
 func won():
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(get_tree().current_scene.filename)
 	if not started: return
 	win_streak += 1

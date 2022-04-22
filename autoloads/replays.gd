@@ -10,53 +10,64 @@ enum {
 }
 
 var logs := {}
-var collision_logs := []
+var replays_dir := Directory.new()
+var has_replays := false
 
 
 func _ready():
-	var dir := Directory.new()
-	if not dir.dir_exists(REPLAYS_PATH):
-		if dir.make_dir(REPLAYS_PATH) != OK:
+	if not replays_dir.dir_exists(REPLAYS_PATH):
+		if replays_dir.make_dir(REPLAYS_PATH) != OK:
 			push_error("Could not make replays path!")
 			return
-	dir.open(REPLAYS_PATH)
-	dir.list_dir_begin()
-	var replay_name = dir.get_next()
+	if replays_dir.open(REPLAYS_PATH) != OK:
+		push_error("Could not open replays path!")
+		return
+		
+	# warning-ignore:return_value_discarded
+	replays_dir.list_dir_begin(true)
+	var replay_name := replays_dir.get_next()
 	var to_remove := []
 	
 	while not (replay_name.empty() or replay_name == "."):
 		var file := File.new()
-		if file.open(REPLAYS_PATH + replay_name, File.READ) != OK:
+		
+		if file.open_compressed(REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP) != OK:
 			to_remove.append(replay_name)
+			replay_name = replays_dir.get_next()
 			continue
 		if file.get_16() != REPLAY_VERSION:
 			to_remove.append(replay_name)
+			replay_name = replays_dir.get_next()
 			continue
+		replay_name = replays_dir.get_next()
+		has_replays = true
 	
 	for file_name in to_remove:
-		if dir.remove(file_name) != OK:
+		if replays_dir.remove(file_name) != OK:
 			push_error("Could not delete " + REPLAYS_PATH + file_name + "!")
 
 
 func reset():
 	logs.clear()
-	collision_logs.clear()
 
 
-func load_replay(replay_name: String):
+func load_replay(replay_name: String) -> bool:
 	var file := File.new()
-	file.open_compressed(REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP)
+	if file.open_compressed(REPLAYS_PATH + replay_name, File.READ, File.COMPRESSION_GZIP) != OK:
+		return false
+	
+	# warning-ignore-all:return_value_discarded
 	file.get_16()
 	var data: Dictionary = file.get_var()
 	file.close()
 	logs = data["jumps"]
-	collision_logs = data["collisions"]
 	GameState.current_seed = data["seed"]
 	GameState.tmp_seed = true
 	get_tree().change_scene("res://levels/replay.tscn")
+	return true
 
 
-func save_replay():
+func save_replay() -> bool:
 	var file := File.new()
 	var idx := 0
 	var file_path := REPLAYS_PATH + "replay" + str(idx) + ".log"
@@ -64,17 +75,20 @@ func save_replay():
 		idx += 1
 		file_path = REPLAYS_PATH + "replay" + str(idx) + ".log"
 
-	file.open_compressed(file_path, File.WRITE, File.COMPRESSION_GZIP)
+	if file.open_compressed(file_path, File.WRITE, File.COMPRESSION_GZIP) != OK:
+		return false
 	file.store_16(REPLAY_VERSION)
 	file.store_var(get_replay_dict())
 	file.close()
+	has_replays = true
+	return true
 
 
 func get_replay_dict() -> Dictionary:
 	return {
 		"seed": GameState.current_seed,
 		"jumps": logs,
-		"collisions": collision_logs
+		"date": OS.get_datetime()
 	}
 
 
@@ -84,7 +98,3 @@ func log_jump_start(frames: int, to: Vector2, origin: Vector2, velocity: Vector2
 
 func log_jump_end(frames: int, origin: Vector2, velocity: Vector2):
 	logs[frames] = [JUMP_STOPPED, origin, velocity]
-
-
-func log_collision(origin: Vector2, velocity: Vector2):
-	collision_logs.append([origin, velocity])

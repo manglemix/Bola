@@ -38,7 +38,6 @@ func _ready():
 		
 		if _rng.randf() < breakable_frac:
 			barrier = BreakableBarrier.new()
-			barrier.connect("broken", GameState, "add_idx_to_skip", [i])
 			
 		elif _rng.randf() < rotatable_frac:
 			barrier = RotatableBarrier.new()
