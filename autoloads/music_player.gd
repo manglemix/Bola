@@ -14,6 +14,8 @@ var song_index := 0
 
 
 func _ready():
+	bus = "Music"
+	volume_db = -5
 	randomize()
 	songs.shuffle()
 	_on_finished()
