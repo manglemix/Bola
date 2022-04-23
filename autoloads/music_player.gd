@@ -3,44 +3,28 @@ extends AudioStreamPlayer
 
 const SONG_FOLDER := "res://songs/"
 
-var songs := []
+var songs := [
+	preload("res://songs/Goldberg Variations, BWV 988 - 10 - Variatio 9 a 1 Clav. Canone alla Terza.mp3"),
+	preload("res://songs/Goldberg Variations, BWV 988 - 17 - Variatio 16 a 1 Clav. Ouverture.mp3"),
+	preload("res://songs/Goldberg Variations, BWV 988 - 22 - Variatio 21 Canone alla Settima.mp3"),
+	preload("res://songs/Goldberg Variations, BWV 988 - 26 - Variatio 25 a 2 Clav.mp3"),
+	preload("res://songs/Goldberg Variations, BWV. 988 - Variation 22.mp3"),
+]
 var song_index := 0
 
 
 func _ready():
-	var dir := Directory.new()
-	if dir.open(SONG_FOLDER) != OK:
-		return
-	if dir.list_dir_begin(true) != OK:
-		return
-	
-	var song_name := dir.get_next()
-	while not song_name.empty():
-		if song_name.ends_with(".import"):
-			song_name = dir.get_next()
-			continue
-		var song = load(SONG_FOLDER + song_name)
-		if not song is AudioStream:
-			push_error(song_name + " is not an audio file!")
-			song_name = dir.get_next()
-			continue
-		songs.append(song)
-		song_name = dir.get_next()
-	
+	randomize()
 	songs.shuffle()
-	stream = songs[0]
-	song_index = 1
-	play()
+	_on_finished()
 	# warning-ignore:return_value_discarded
 	connect("finished", self, "_on_finished")
 
 
 func _on_finished():
-	song_index += 1
 	if songs.size() == song_index:
-		song_index = 1
+		song_index = 0
 		songs.shuffle()
-		stream = songs[0]
-		return
 	stream = songs[song_index]
+	song_index += 1
 	play()
