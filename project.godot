@@ -96,6 +96,7 @@ config/quit_on_go_back=false
 GameState="*res://autoloads/game_state.gd"
 Replays="*res://autoloads/replays.gd"
 MusicPlayer="*res://autoloads/music_player.gd"
+Settings="*res://autoloads/settings.gd"
 
 [display]
 

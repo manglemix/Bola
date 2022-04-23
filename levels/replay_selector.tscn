@@ -11,6 +11,12 @@ func _input(event):
 	if event.is_action_pressed(\"ui_cancel\"):
 		# warning-ignore:return_value_discarded
 		get_tree().change_scene(\"res://levels/main_menu.tscn\")
+
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST or what == MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
+		# warning-ignore:return_value_discarded
+		get_tree().change_scene(\"res://levels/main_menu.tscn\")
 "
 
 [sub_resource type="DynamicFont" id=5]

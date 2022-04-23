@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Quicksand_Bold.otf" type="DynamicFontData" id=2]
@@ -102,6 +102,20 @@ func _on_Play_pressed():
 	get_tree().change_scene(\"res://levels/replay_selector.tscn\")
 "
 
+[sub_resource type="GDScript" id=13]
+script/source = "extends Button
+
+
+func _ready():
+	disabled = not Replays.has_replays
+
+
+func _on_Play_pressed():
+	GameState.started = true
+	# warning-ignore-all:return_value_discarded
+	get_tree().change_scene(\"res://levels/settings_ui.tscn\")
+"
+
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
 
@@ -113,29 +127,29 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
-margin_top = 355.0
+margin_top = 306.0
 margin_right = 600.0
-margin_bottom = 473.0
+margin_bottom = 424.0
 theme = SubResource( 5 )
 text = "BOLA"
 align = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/VBoxContainer"]
-margin_top = 477.0
+margin_top = 428.0
 margin_right = 600.0
-margin_bottom = 487.0
+margin_bottom = 438.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer"]
-margin_left = 185.0
-margin_top = 491.0
-margin_right = 415.0
-margin_bottom = 669.0
-rect_min_size = Vector2( 230, 0 )
+margin_left = 180.0
+margin_top = 442.0
+margin_right = 420.0
+margin_bottom = 718.0
+rect_min_size = Vector2( 240, 0 )
 size_flags_horizontal = 4
 
 [node name="Play" type="Button" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
-margin_right = 230.0
+margin_right = 240.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 200, 80 )
 focus_mode = 0
@@ -149,13 +163,13 @@ script = SubResource( 8 )
 
 [node name="Control2" type="Control" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
 margin_top = 84.0
-margin_right = 230.0
+margin_right = 240.0
 margin_bottom = 94.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Replays" type="Button" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
 margin_top = 98.0
-margin_right = 230.0
+margin_right = 240.0
 margin_bottom = 178.0
 rect_min_size = Vector2( 200, 80 )
 focus_mode = 0
@@ -169,5 +183,27 @@ custom_styles/normal = SubResource( 9 )
 text = "REPLAYS"
 script = SubResource( 11 )
 
+[node name="Control3" type="Control" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
+margin_top = 182.0
+margin_right = 240.0
+margin_bottom = 192.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="Replays2" type="Button" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
+margin_top = 196.0
+margin_right = 240.0
+margin_bottom = 276.0
+rect_min_size = Vector2( 200, 80 )
+theme = SubResource( 7 )
+custom_colors/font_color_disabled = Color( 0.37, 0.37, 0.37, 1 )
+custom_colors/font_color_pressed = Color( 0.46, 0.46, 0.46, 1 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/disabled = SubResource( 12 )
+custom_styles/normal = SubResource( 9 )
+text = "OPTIONS"
+script = SubResource( 13 )
+
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Play" to="CanvasLayer/VBoxContainer/VBoxContainer/Play" method="_on_Play_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Replays" to="CanvasLayer/VBoxContainer/VBoxContainer/Replays" method="_on_Play_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Replays2" to="CanvasLayer/VBoxContainer/VBoxContainer/Replays2" method="_on_Play_pressed"]
