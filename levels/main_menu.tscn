@@ -68,10 +68,7 @@ script/source = "extends Button
 
 
 func _on_Play_pressed():
-	GameState.started = true
-	# warning-ignore-all:return_value_discarded
-	get_tree().change_scene(\"res://levels/main.tscn\")
-	get_tree().connect(\"idle_frame\", Replays, \"reset\", [], CONNECT_ONESHOT)
+	GameState.load_level()
 "
 
 [sub_resource type="StyleBoxFlat" id=12]
@@ -97,7 +94,6 @@ func _ready():
 
 
 func _on_Play_pressed():
-	GameState.started = true
 	# warning-ignore-all:return_value_discarded
 	get_tree().change_scene(\"res://levels/replay_selector.tscn\")
 "
@@ -106,12 +102,7 @@ func _on_Play_pressed():
 script/source = "extends Button
 
 
-func _ready():
-	disabled = not Replays.has_replays
-
-
 func _on_Play_pressed():
-	GameState.started = true
 	# warning-ignore-all:return_value_discarded
 	get_tree().change_scene(\"res://levels/settings_ui.tscn\")
 "
@@ -189,7 +180,7 @@ margin_right = 240.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 0, 10 )
 
-[node name="Replays2" type="Button" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
+[node name="Options" type="Button" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
 margin_top = 196.0
 margin_right = 240.0
 margin_bottom = 276.0
@@ -206,4 +197,4 @@ script = SubResource( 13 )
 
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Play" to="CanvasLayer/VBoxContainer/VBoxContainer/Play" method="_on_Play_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Replays" to="CanvasLayer/VBoxContainer/VBoxContainer/Replays" method="_on_Play_pressed"]
-[connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Replays2" to="CanvasLayer/VBoxContainer/VBoxContainer/Replays2" method="_on_Play_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Options" to="CanvasLayer/VBoxContainer/VBoxContainer/Options" method="_on_Play_pressed"]

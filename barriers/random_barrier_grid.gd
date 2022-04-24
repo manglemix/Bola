@@ -2,16 +2,17 @@ class_name RandomBarrierGrid
 extends Node2D
 
 
-export var max_barrier_count := 50
+export var max_barrier_count := 65
 export var grid_start_height := 200.0
+export var grid_end_height := 2000.0
 export var grid_step := 50.0
-export var grid_width = 1000.0
+export var grid_width = 1500.0
 export var max_barrier_steps_bounds := 3
 export var breakable_frac := 0.1
-export var rotatable_frac := 0.10
+export var rotatable_frac := 0.1
 export var bouncy_frac := 0.1
-export var player_path: NodePath = "Player"
 export var barrier_thickness := 10.0
+export var verticality := 1.0
 export(Array, PoolVector2Array) var _existing_barrier_points := []
 
 var _rng := RandomNumberGenerator.new()
@@ -19,9 +20,7 @@ var _rng_counter := 0.0
 
 
 func _ready():
-	GameState.player = get_node(player_path)
 	_rng.seed = GameState.get_seed()
-	
 	prints("Using seed:", _rng.seed)
 	var barrier_transforms := []
 	var barrier_count := 0
@@ -31,7 +30,7 @@ func _ready():
 	while i < max_barrier_count:
 		var origin := Vector2(
 			stepify(_rng.randf_range(- grid_width / 2, grid_width / 2), grid_step),
-			stepify(_rng.randf_range(-grid_start_height, - GameState.level_height), grid_step)
+			stepify(_rng.randf_range(-grid_start_height, - grid_end_height), grid_step)
 		)
 		
 		var barrier
@@ -52,8 +51,8 @@ func _ready():
 		
 		while extents.length_squared() == 0 or origin.y + extents.y > - grid_start_height:
 			extents =  Vector2(
-				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds)),
-				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds))
+				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds) / verticality),
+				round(_rng.randf_range(-max_barrier_steps_bounds, max_barrier_steps_bounds) * verticality)
 			) * grid_step
 		
 		extents += origin
@@ -102,8 +101,6 @@ func _ready():
 	var barrier_meshes_node := MultiMeshInstance2D.new()
 	barrier_meshes_node.multimesh = barrier_meshes
 	add_child(barrier_meshes_node)
-	
-#	if not GameState.loading_from_disk: GameState.save()
 
 
 static func is_point_between(point: Vector2, from: Vector2, to: Vector2) -> bool:

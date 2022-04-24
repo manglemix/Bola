@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://barriers/barrier.gd" type="Script" id=1]
+[ext_resource path="res://agents/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/gameplay_hud.tscn" type="PackedScene" id=3]
+[ext_resource path="res://levels/portal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/level_root.gd" type="Script" id=5]
+
+[node name="LevelRoot" type="Node2D"]
+script = ExtResource( 5 )
+breakable_frac = 1.0
+rotatable_frac = 0.0
+bouncy_frac = 0.0
+_existing_barrier_points = [ PoolVector2Array( -500, 0, 500, 0 ) ]
+
+[node name="Barrier" type="StaticBody2D" parent="."]
+script = ExtResource( 1 )
+dimensions = Vector2( 500, 20 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, -150 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+
+[node name="Portal" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -2500 )
+_target_node_path = NodePath("../Player")
+
+[node name="GameplayHUD" parent="." instance=ExtResource( 3 )]
+
+[connection signal="jumped" from="Player" to="GameplayHUD" method="jump"]
+[connection signal="landed" from="Player" to="GameplayHUD" method="reset"]
+[connection signal="portal_reached" from="Portal" to="." method="win"]
