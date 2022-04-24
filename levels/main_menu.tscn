@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Quicksand_Bold.otf" type="DynamicFontData" id=2]
@@ -107,6 +107,13 @@ func _on_Play_pressed():
 	get_tree().change_scene(\"res://levels/settings_ui.tscn\")
 "
 
+[sub_resource type="GDScript" id=14]
+script/source = "extends Label
+
+
+func _ready():
+	label.text = str(GameState.difficulty)"
+
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
 
@@ -118,24 +125,24 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
-margin_top = 306.0
+margin_top = 296.0
 margin_right = 600.0
-margin_bottom = 424.0
+margin_bottom = 414.0
 theme = SubResource( 5 )
 text = "BOLA"
 align = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/VBoxContainer"]
-margin_top = 428.0
+margin_top = 418.0
 margin_right = 600.0
-margin_bottom = 438.0
+margin_bottom = 428.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer"]
 margin_left = 180.0
-margin_top = 442.0
+margin_top = 432.0
 margin_right = 420.0
-margin_bottom = 718.0
+margin_bottom = 728.0
 rect_min_size = Vector2( 240, 0 )
 size_flags_horizontal = 4
 
@@ -194,6 +201,12 @@ custom_styles/disabled = SubResource( 12 )
 custom_styles/normal = SubResource( 9 )
 text = "OPTIONS"
 script = SubResource( 13 )
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/VBoxContainer"]
+margin_top = 280.0
+margin_right = 240.0
+margin_bottom = 296.0
+script = SubResource( 14 )
 
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Play" to="CanvasLayer/VBoxContainer/VBoxContainer/Play" method="_on_Play_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/VBoxContainer/Replays" to="CanvasLayer/VBoxContainer/VBoxContainer/Replays" method="_on_Play_pressed"]

@@ -4,7 +4,7 @@ extends RandomBarrierGrid
 
 export var vertical_leeway := 600.0
 
-var _going_back := false
+var _can_lose := true
 
 
 func _ready():
@@ -32,16 +32,17 @@ func _notification(what):
 
 
 func _go_back():
-	_going_back = true
+	_can_lose = false
 	GameState.win_streak = 0
 	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://levels/main_menu.tscn")
 
 
 func _on_screen_exited():
-	if _going_back: return
+	if not _can_lose: return
 	GameState.lost()
 
 
 func win():
+	_can_lose = false
 	GameState.won()
