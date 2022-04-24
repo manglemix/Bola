@@ -112,7 +112,7 @@ script/source = "extends Label
 
 
 func _ready():
-	text = str(GameState.difficulty)
+	text = str(GameState.difficulty) + \" \" + str(GameState.GRANDMASTER)
 "
 
 [node name="Node2D" type="Node2D"]
