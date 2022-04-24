@@ -31,15 +31,14 @@ func get_seed():
 
 func load_level():
 	# warning-ignore-all:return_value_discarded
-	match difficulty:
-		AMATEUR:
-			get_tree().change_scene("res://levels/amateur.tscn")
-		PROFESSIONAL:
-			get_tree().change_scene("res://levels/professional.tscn")
-		GRANDMASTER:
-			get_tree().change_scene("res://levels/grandmaster.tscn")
-		_:
-			get_tree().change_scene("res://levels/casual.tscn")
+	if is_equal_approx(difficulty, AMATEUR):
+		get_tree().change_scene("res://levels/amateur.tscn")
+	elif is_equal_approx(difficulty, PROFESSIONAL):
+		get_tree().change_scene("res://levels/professional.tscn")
+	elif is_equal_approx(difficulty, GRANDMASTER):
+		get_tree().change_scene("res://levels/grandmaster.tscn")
+	else:
+		get_tree().change_scene("res://levels/casual.tscn")
 	yield(get_tree(), "idle_frame")
 	Replays.reset()
 
