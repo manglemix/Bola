@@ -46,15 +46,15 @@ func load_level():
 
 func lost():
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene(get_tree().current_scene.filename)
 	win_streak = 0
+	get_tree().change_scene(get_tree().current_scene.filename)
 	Replays.reset()
 
 
 func won():
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene(get_tree().current_scene.filename)
 	win_streak += 1
+	get_tree().change_scene(get_tree().current_scene.filename)
 	# warning-ignore:return_value_discarded
 	Replays.save_replay()
 	yield(get_tree(), "idle_frame")
