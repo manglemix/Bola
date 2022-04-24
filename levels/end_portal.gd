@@ -2,19 +2,19 @@ class_name EndPortal
 extends Area2D
 
 
-
 signal portal_reached
 
 export var _target_node_path: NodePath
 export var height_gap := 500.0
 export var grav_distance := 300.0
 export var grav_factor := 0.001
+export var max_height := 2000.0
 
 onready var _target_node: BouncyBall = get_node(_target_node_path)
 
 
 func _ready():
-	global_position.y = - GameState.level_height - height_gap
+	global_position.y = - max_height - height_gap
 
 
 func _on_Portal_body_entered(body):

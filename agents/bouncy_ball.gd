@@ -22,6 +22,7 @@ export var controller_path: NodePath
 export var bounce_modifier := 0.6
 export var drag_modifier := 0.00001
 export var mass := 1.0
+export var gravity_scale := 1.0
 export var friction_decel := 500.0
 
 var jumping := false
@@ -31,7 +32,7 @@ var _jump_timer: Timer
 var linear_velocity := Vector2.ZERO
 
 onready var _controller: AgentController = get_node(controller_path)
-onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity") * gravity_scale
 
 
 func set_linear_velocity(velocity: Vector2):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://ui/back_button.tscn" type="PackedScene" id=2]
@@ -46,6 +46,35 @@ func _on_HSlider_value_changed(value):
 	Settings.set_music_volume(lerp(Settings.MIN_MUSIC_VOLUME, Settings.MAX_MUSIC_VOLUME, value))
 "
 
+[sub_resource type="GDScript" id=7]
+script/source = "extends HSlider
+
+
+onready var label: Label = $\"../Label2\"
+
+
+func _ready():
+	value = GameState.difficulty
+	_on_HSlider_value_changed(value)
+
+
+func _on_HSlider_value_changed(value):
+	GameState.difficulty = value
+	match int(value):
+		GameState.CASUAL:
+			label.text = \"Casual\"
+			label.modulate = Color.white
+		GameState.AMATEUR:
+			label.text = \"Amateur\"
+			label.modulate = Color.darkgoldenrod
+		GameState.PROFESSIONAL:
+			label.text = \"Professional\"
+			label.modulate = Color.gold
+		GameState.GRANDMASTER:
+			label.text = \"Grandmaster\"
+			label.modulate = Color.yellow
+"
+
 [node name="Control" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -90,7 +119,7 @@ rect_min_size = Vector2( 0, 30 )
 margin_left = 130.0
 margin_top = 138.0
 margin_right = 430.0
-margin_bottom = 188.0
+margin_bottom = 276.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 4
 
@@ -110,4 +139,26 @@ step = 0.01
 value = 1.0
 script = SubResource( 5 )
 
+[node name="Control" type="Control" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 300.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+margin_top = 88.0
+margin_right = 300.0
+margin_bottom = 118.0
+theme = SubResource( 4 )
+text = "Casual"
+align = 1
+
+[node name="HSlider2" type="HSlider" parent="VBoxContainer"]
+margin_top = 122.0
+margin_right = 300.0
+margin_bottom = 138.0
+max_value = 3.0
+script = SubResource( 7 )
+
 [connection signal="value_changed" from="VBoxContainer/HSlider" to="VBoxContainer/HSlider" method="_on_HSlider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HSlider2" to="VBoxContainer/HSlider2" method="_on_HSlider_value_changed"]

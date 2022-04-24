@@ -1,7 +1,7 @@
 extends Node
 
 
-const REPLAY_VERSION := 1
+const REPLAY_VERSION := 2
 const REPLAYS_PATH := "user://replays/"
 const ICON_SIZE := 200
 
@@ -75,6 +75,7 @@ func capture_thumbnail():
 
 
 func load_replay(replay: Replay):
+	return
 	GameState.current_seed = replay.level_seed
 	logs = replay.logs
 	GameState.tmp_seed = true
@@ -102,6 +103,7 @@ func save_replay() -> bool:
 func get_replay_dict() -> Dictionary:
 	return {
 		"seed": GameState.current_seed,
+		"difficulty": GameState.difficulty,
 		"jumps": logs,
 		"date": OS.get_datetime(),
 		"thumbnail": thumbnail

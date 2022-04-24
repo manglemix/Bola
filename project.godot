@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://levels/end_portal.gd"
 }, {
+"base": "RandomBarrierGrid",
+"class": "LevelRoot",
+"language": "GDScript",
+"path": "res://levels/level_root.gd"
+}, {
 "base": "BouncyBall",
 "class": "Player",
 "language": "GDScript",
@@ -75,6 +80,7 @@ _global_script_class_icons={
 "BouncyBall": "",
 "BreakableBarrier": "",
 "EndPortal": "",
+"LevelRoot": "",
 "Player": "",
 "RandomBarrierGrid": "",
 "Replay": "",
