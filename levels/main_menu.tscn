@@ -112,7 +112,8 @@ script/source = "extends Label
 
 
 func _ready():
-	label.text = str(GameState.difficulty)"
+	text = str(GameState.difficulty)
+"
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
