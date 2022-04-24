@@ -29,8 +29,13 @@ func get_seed():
 	return current_seed
 
 
-func load_level():
+func load_level(replay: Replay = null):
 	# warning-ignore-all:return_value_discarded
+	if replay != null:
+		current_seed = replay.level_seed
+		difficulty = replay.difficulty
+		tmp_seed = true
+	
 	if is_equal_approx(difficulty, AMATEUR):
 		get_tree().change_scene("res://levels/amateur.tscn")
 	elif is_equal_approx(difficulty, PROFESSIONAL):
@@ -39,7 +44,11 @@ func load_level():
 		get_tree().change_scene("res://levels/grandmaster.tscn")
 	else:
 		get_tree().change_scene("res://levels/casual.tscn")
+	
 	yield(get_tree(), "idle_frame")
+	if replay != null:
+		get_tree().current_scene.replay(replay)
+		return
 	Replays.reset()
 
 

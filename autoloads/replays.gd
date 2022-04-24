@@ -1,7 +1,7 @@
 extends Node
 
 
-const REPLAY_VERSION := 2
+const REPLAY_VERSION := 3
 const REPLAYS_PATH := "user://replays/"
 const ICON_SIZE := 200
 
@@ -10,7 +10,7 @@ enum {
 	JUMP_STOPPED,
 }
 
-var logs := {}
+var _logs := {}
 var replays_dir := Directory.new()
 var has_replays := false
 var thumbnail: PoolByteArray
@@ -50,7 +50,7 @@ func _ready():
 
 
 func reset():
-	logs.clear()
+	_logs.clear()
 
 
 func capture_thumbnail():
@@ -74,15 +74,6 @@ func capture_thumbnail():
 	thumbnail = img.save_png_to_buffer()
 
 
-func load_replay(replay: Replay):
-	return
-	GameState.current_seed = replay.level_seed
-	logs = replay.logs
-	GameState.tmp_seed = true
-	# warning-ignore:return_value_discarded
-	get_tree().change_scene("res://levels/replay.tscn")
-
-
 func save_replay() -> bool:
 	var file := File.new()
 	var idx := 0
@@ -104,15 +95,15 @@ func get_replay_dict() -> Dictionary:
 	return {
 		"seed": GameState.current_seed,
 		"difficulty": GameState.difficulty,
-		"jumps": logs,
+		"jumps": _logs,
 		"date": OS.get_datetime(),
 		"thumbnail": thumbnail
 	}
 
 
 func log_jump_start(frames: int, to: Vector2, origin: Vector2, velocity: Vector2):
-	logs[frames] = [JUMP_START, to, origin, velocity]
+	_logs[frames] = [JUMP_START, to, origin, velocity]
 
 
 func log_jump_end(frames: int, origin: Vector2, velocity: Vector2):
-	logs[frames] = [JUMP_STOPPED, origin, velocity]
+	_logs[frames] = [JUMP_STOPPED, origin, velocity]

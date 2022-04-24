@@ -5,9 +5,9 @@ extends Node2D
 export var max_barrier_count := 65
 export var grid_start_height := 200.0
 export var grid_end_height := 2000.0
-export var grid_step := 50.0
+export var grid_step := 25.0
 export var grid_width = 1500.0
-export var max_barrier_steps_bounds := 3
+export var max_barrier_steps_bounds := 6
 export var breakable_frac := 0.1
 export var rotatable_frac := 0.1
 export var bouncy_frac := 0.1
