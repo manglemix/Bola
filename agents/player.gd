@@ -18,6 +18,12 @@ func _ready():
 	connect("not_landed", self, "_on_not_landed")
 
 
+func replay(replay: Replay):
+	var replayer = get_node("UserInput")
+	replayer.set_script(Replayer)
+	replayer.load_replay(replay)
+
+
 func _try_vibrate(_null):
 	if not GameState.vibrating: return
 	Input.vibrate_handheld(50)

@@ -2,9 +2,13 @@ class_name LevelRoot
 extends RandomBarrierGrid
 
 
+signal replaying(replay)
+
 export var vertical_leeway := 600.0
 
 var _can_lose := true
+var _replaying := false
+var _replay: Replay
 
 
 func _ready():
@@ -40,9 +44,22 @@ func _go_back():
 
 func _on_screen_exited():
 	if not _can_lose: return
+	if _replaying:
+		GameState.load_level(_replay)
+		return
 	GameState.lost()
 
 
 func win():
+	if _replaying:
+		GameState.load_level(_replay)
+		return
 	_can_lose = false
 	GameState.won()
+
+
+func replay(replay: Replay):
+	_replaying = true
+	_can_lose = false
+	_replay = replay
+	emit_signal("replaying", replay)

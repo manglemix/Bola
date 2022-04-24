@@ -11,8 +11,8 @@ var global_position: Vector2
 var linear_velocity: Vector2
 
 
-func _ready():
-	var jump_log := Replays.logs
+func load_replay(replay: Replay):
+	var jump_log := replay.logs
 	jump_times = jump_log.keys()
 	jump_enums = jump_log.values()
 

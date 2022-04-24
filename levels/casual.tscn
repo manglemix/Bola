@@ -26,6 +26,7 @@ _target_node_path = NodePath("../Player")
 
 [node name="GameplayHUD" parent="." instance=ExtResource( 3 )]
 
+[connection signal="replaying" from="." to="Player" method="replay"]
 [connection signal="jumped" from="Player" to="GameplayHUD" method="jump"]
 [connection signal="landed" from="Player" to="GameplayHUD" method="reset"]
 [connection signal="portal_reached" from="Portal" to="." method="win"]

@@ -5,6 +5,7 @@ extends Reference
 var name: String
 var icon: ImageTexture
 var logs: Dictionary
+var difficulty: int
 var level_seed: int
 
 
@@ -18,6 +19,7 @@ func parse_replay(replay_name: String) -> int:
 	var data: Dictionary = file.get_var()
 	logs = data["jumps"]
 	level_seed = data["seed"]
+	difficulty = data["difficulty"]
 	var date: Dictionary = data["date"]
 	
 	name = str(date["day"]) + "-" + str(date["month"]) + "-" + str(date["year"]).right(2) + "  " + str(date["hour"]) + ":" + str(date["minute"])

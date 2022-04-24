@@ -16,6 +16,11 @@ onready var jump_icon1: Node2D = $VBoxContainer/HBoxContainer/Control/JumpIcon
 onready var jump_icon2: Node2D = $VBoxContainer/HBoxContainer/Control/JumpIcon2
 
 
+func replay(_replay):
+	$VBoxContainer/HBoxContainer2/Label.queue_free()
+	$VBoxContainer/HBoxContainer2/Label2.queue_free()
+
+
 func reset():
 	jump_icon1.modulate.a = 1
 	jump_icon2.modulate.a = 1
