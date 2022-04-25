@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends PanelContainer
+
+
+signal selected
+
+
+func _ready():
+	self_modulate.a = 0
+	$HBoxContainer/TextureRect.rect_min_size.y = Replays.ICON_SIZE
+
+
+func set_image(image: ImageTexture):
+	$HBoxContainer/TextureRect.texture = image
+
+
+func set_text(text: String):
+	$HBoxContainer/Label.text = text
+
+
+func _gui_input(event):
+	if event is InputEventMouseButton:
+		if event.doubleclick:
+			emit_signal(\"selected\")
+		elif event.pressed:
+			self_modulate.a = 0.6
+
+
+func _input(event):
+	if event is InputEventMouseButton and event.pressed:
+		self_modulate.a = 0
+"
+
+[node name="HBoxContainer" type="PanelContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 35.0
+margin_bottom = 33.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+margin_bottom = 26.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 4.0
+margin_right = 24.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 28.0
+margin_right = 28.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+valign = 1

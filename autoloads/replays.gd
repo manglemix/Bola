@@ -1,9 +1,9 @@
 extends Node
 
 
-const REPLAY_VERSION := 3
+const REPLAY_VERSION := 4
 const REPLAYS_PATH := "user://replays/"
-const ICON_SIZE := 200
+const ICON_SIZE := 160
 
 enum {
 	JUMP_START,
