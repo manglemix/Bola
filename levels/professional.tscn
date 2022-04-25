@@ -35,6 +35,6 @@ max_height = 3500.0
 
 [connection signal="replaying" from="." to="Player" method="replay"]
 [connection signal="replaying" from="." to="GameplayHUD" method="replay"]
-[connection signal="jumped" from="Player" to="GameplayHUD" method="jump"]
+[connection signal="jump_started" from="Player" to="GameplayHUD" method="jump"]
 [connection signal="landed" from="Player" to="GameplayHUD" method="reset"]
 [connection signal="portal_reached" from="Portal" to="." method="win"]

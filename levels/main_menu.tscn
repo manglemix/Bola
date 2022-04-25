@@ -1,26 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Quicksand_Bold.otf" type="DynamicFontData" id=2]
-
-[sub_resource type="GDScript" id=3]
-script/source = "extends Node2D
-
-
-func _input(event):
-	if event.is_action_pressed(\"ui_cancel\"):
-		_go_back()
-
-
-func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST or what == MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
-		_go_back()
-
-
-func _go_back():
-	if OS.has_feature(\"NoExit\"): return
-	get_tree().quit()
-"
 
 [sub_resource type="DynamicFont" id=4]
 size = 128
@@ -108,7 +89,6 @@ func _on_Play_pressed():
 "
 
 [node name="Node2D" type="Node2D"]
-script = SubResource( 3 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
