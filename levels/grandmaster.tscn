@@ -22,8 +22,6 @@ dimensions = Vector2( 500, 20 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -150 )
-initial_jump_speed = 600.0
-jump_acceleration = 1400.0
 gravity_scale = 2.2
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
