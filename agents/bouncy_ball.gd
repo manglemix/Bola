@@ -12,8 +12,7 @@ signal jumped
 signal collided_with(body)
 signal jump_started(to)
 
-export var initial_jump_speed := 400.0
-export var jump_acceleration := 900.0
+export var jump_height := 300.0
 export var jump_duration := 0.5
 export var max_jumps := 2
 export var max_floor_angle_degrees := 60.0
@@ -33,6 +32,8 @@ var linear_velocity := Vector2.ZERO
 
 onready var _controller: AgentController = get_node(controller_path)
 onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity") * gravity_scale
+onready var initial_jump_speed := sqrt(gravity * jump_height)
+onready var jump_acceleration := (sqrt(gravity) * sqrt(gravity * jump_duration * jump_duration + 8 * jump_height - 4 * jump_duration * initial_jump_speed) + gravity * jump_duration - 2 * initial_jump_speed) / 2 / jump_duration
 
 
 func set_linear_velocity(velocity: Vector2):
@@ -74,7 +75,7 @@ func snap_all(snap_size:=0.1):
 
 func _physics_process(delta: float):
 	linear_velocity += Vector2.DOWN * gravity * delta
-	linear_velocity -= linear_velocity * linear_velocity * drag_modifier * delta
+#	linear_velocity -= linear_velocity * linear_velocity * drag_modifier * delta
 	
 	_controller.poll_mutation(delta, self)
 	

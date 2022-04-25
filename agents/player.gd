@@ -3,7 +3,7 @@ extends BouncyBall
 
 
 const TOO_STEEP_SCENE: PackedScene = preload("res://ui/too_steep.tscn")
-const TOO_STEEP_ANGLE := deg2rad(80)
+const TOO_STEEP_ANGLE_DIFF := 20.0
 const TOO_STEEP_DELAY := 0.5
 
 var _too_steep_delay_timer: Timer
@@ -30,7 +30,7 @@ func _try_vibrate(_null):
 
 
 func _on_not_landed(angle: float):
-	if angle > TOO_STEEP_ANGLE or not _too_steep_delay_timer.is_stopped(): return
+	if angle > deg2rad(max_floor_angle_degrees + TOO_STEEP_ANGLE_DIFF) or not _too_steep_delay_timer.is_stopped(): return
 	var instance := TOO_STEEP_SCENE.instance()
 	get_tree().current_scene.add_child(instance)
 	instance.global_position = global_position
