@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://ui/back_button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/grabber.png" type="Texture" id=3]
 
 [sub_resource type="GDScript" id=6]
 script/source = "extends VBoxContainer
@@ -27,11 +28,25 @@ font_data = ExtResource( 1 )
 default_font = SubResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 32
+size = 48
 font_data = ExtResource( 1 )
 
 [sub_resource type="Theme" id=4]
 default_font = SubResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_right = 547.0
+content_margin_top = 46.0
+bg_color = Color( 0.22, 0.22, 0.25, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.184314, 0.184314, 0.184314, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="GDScript" id=5]
 script/source = "extends HSlider
@@ -75,6 +90,18 @@ func _on_HSlider_value_changed(value):
 			label.modulate = Color.yellow
 "
 
+[sub_resource type="GDScript" id=9]
+script/source = "extends CheckButton
+
+
+func _ready():
+	pressed = OS.window_fullscreen
+
+
+func _on_CheckButton_toggled(button_pressed):
+	OS.window_fullscreen = button_pressed
+"
+
 [node name="Control" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,49 +143,80 @@ margin_bottom = 134.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 130.0
+margin_left = 5.0
 margin_top = 138.0
-margin_right = 430.0
-margin_bottom = 276.0
+margin_right = 554.0
+margin_bottom = 476.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_right = 300.0
-margin_bottom = 30.0
+margin_right = 549.0
+margin_bottom = 44.0
 theme = SubResource( 4 )
 text = "Music"
 align = 1
 
 [node name="HSlider" type="HSlider" parent="VBoxContainer"]
-margin_top = 34.0
-margin_right = 300.0
-margin_bottom = 50.0
+margin_top = 48.0
+margin_right = 549.0
+margin_bottom = 148.0
+rect_min_size = Vector2( 0, 50 )
+focus_mode = 0
+custom_icons/grabber_highlight = ExtResource( 3 )
+custom_icons/grabber = ExtResource( 3 )
+custom_styles/slider = SubResource( 8 )
 max_value = 1.0
 step = 0.01
 value = 1.0
 script = SubResource( 5 )
 
 [node name="Control" type="Control" parent="VBoxContainer"]
-margin_top = 54.0
-margin_right = 300.0
-margin_bottom = 84.0
+margin_top = 152.0
+margin_right = 549.0
+margin_bottom = 182.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
-margin_top = 88.0
-margin_right = 300.0
-margin_bottom = 118.0
+margin_top = 186.0
+margin_right = 549.0
+margin_bottom = 230.0
 theme = SubResource( 4 )
 text = "Casual"
 align = 1
 
 [node name="HSlider2" type="HSlider" parent="VBoxContainer"]
-margin_top = 122.0
-margin_right = 300.0
-margin_bottom = 138.0
+margin_top = 234.0
+margin_right = 549.0
+margin_bottom = 334.0
+custom_icons/grabber_highlight = ExtResource( 3 )
+custom_icons/grabber = ExtResource( 3 )
+custom_styles/slider = SubResource( 8 )
 max_value = 3.0
 script = SubResource( 7 )
 
+[node name="Control2" type="Control" parent="VBoxContainer"]
+margin_top = 338.0
+margin_right = 549.0
+margin_bottom = 338.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Control2"]
+margin_left = 50.0
+margin_top = 47.0
+margin_right = 285.0
+margin_bottom = 91.0
+theme = SubResource( 4 )
+text = "Fullscreen"
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/Control2"]
+margin_left = 283.0
+margin_top = 8.0
+margin_right = 359.0
+margin_bottom = 48.0
+rect_scale = Vector2( 3, 3 )
+focus_mode = 0
+script = SubResource( 9 )
+
 [connection signal="value_changed" from="VBoxContainer/HSlider" to="VBoxContainer/HSlider" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HSlider2" to="VBoxContainer/HSlider2" method="_on_HSlider_value_changed"]
+[connection signal="toggled" from="VBoxContainer/Control2/CheckButton" to="VBoxContainer/Control2/CheckButton" method="_on_CheckButton_toggled"]
