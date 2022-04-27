@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Goldberg Variations, BWV 988 - 22 - Variatio 21 Canone alla Settima.mp3-aa090bd5548a40c7893673a2c50aca46.mp3str"
+
+[deps]
+
+source_file="res://songs/Goldberg Variations, BWV 988 - 22 - Variatio 21 Canone alla Settima.mp3"
+dest_files=[ "res://.import/Goldberg Variations, BWV 988 - 22 - Variatio 21 Canone alla Settima.mp3-aa090bd5548a40c7893673a2c50aca46.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/arrow.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends TextureButton
+
+
+func _on_TextureButton_pressed():
+	var action := InputEventAction.new()
+	action.action = \"ui_cancel\"
+	action.pressed = true
+	Input.parse_input_event(action)
+
+
+func _on_TextureButton_button_down():
+	self_modulate = Color.white.darkened(0.3)
+
+
+func _on_TextureButton_button_up():
+	self_modulate = Color.white
+"
+
+[node name="BackButton" type="TextureButton"]
+margin_left = 460.0
+margin_right = 560.0
+margin_bottom = 100.0
+texture_normal = ExtResource( 1 )
+script = SubResource( 1 )
+
+[connection signal="button_down" from="." to="." method="_on_TextureButton_button_down"]
+[connection signal="button_up" from="." to="." method="_on_TextureButton_button_up"]
+[connection signal="pressed" from="." to="." method="_on_TextureButton_pressed"]

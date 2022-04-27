@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Goldberg Variations, BWV 988 - 17 - Variatio 16 a 1 Clav. Ouverture.mp3-cfba3ed9fb1f05f14c6ea3d62e8d5286.mp3str"
+
+[deps]
+
+source_file="res://songs/Goldberg Variations, BWV 988 - 17 - Variatio 16 a 1 Clav. Ouverture.mp3"
+dest_files=[ "res://.import/Goldberg Variations, BWV 988 - 17 - Variatio 16 a 1 Clav. Ouverture.mp3-cfba3ed9fb1f05f14c6ea3d62e8d5286.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

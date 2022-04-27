@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://levels/end_portal.gd"
 }, {
+"base": "RandomBarrierGrid",
+"class": "LevelRoot",
+"language": "GDScript",
+"path": "res://levels/level_root.gd"
+}, {
 "base": "BouncyBall",
 "class": "Player",
 "language": "GDScript",
@@ -44,7 +49,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://barriers/random_barrier_grid.gd"
 }, {
-"base": "Node",
+"base": "Reference",
+"class": "Replay",
+"language": "GDScript",
+"path": "res://replay.gd"
+}, {
+"base": "AgentController",
 "class": "Replayer",
 "language": "GDScript",
 "path": "res://agents/replayer.gd"
@@ -70,8 +80,10 @@ _global_script_class_icons={
 "BouncyBall": "",
 "BreakableBarrier": "",
 "EndPortal": "",
+"LevelRoot": "",
 "Player": "",
 "RandomBarrierGrid": "",
+"Replay": "",
 "Replayer": "",
 "RotatableBarrier": "",
 "SuperBouncyBarrier": "",
@@ -89,6 +101,8 @@ config/quit_on_go_back=false
 
 GameState="*res://autoloads/game_state.gd"
 Replays="*res://autoloads/replays.gd"
+MusicPlayer="*res://autoloads/music_player.gd"
+Settings="*res://autoloads/settings.gd"
 
 [display]
 
@@ -125,5 +139,13 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-misc/mesh_storage/split_stream=true
+quality/driver/driver_name="GLES2"
+threads/thread_safe_bvh=true
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+quality/depth_prepass/enable=false
+quality/skinning/force_software_skinning=true
+gles2/compatibility/disable_half_float=true
+environment/default_clear_color=Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"

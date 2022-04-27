@@ -1,22 +1,21 @@
 extends Node
 
 
+enum {
+	CASUAL,
+	AMATEUR,
+	PROFESSIONAL,
+	GRANDMASTER
+}
+
 const MAX_HEIGHT_CHANGE := 300.0
 const MOVE_WEIGHT := 0.5
 
-var level_height := 2000.0
-var _start_time := OS.get_system_time_secs()
 var current_seed: int
-var player: BouncyBall
-var started := false
-
-var rotatables_rotation := {}
-var player_velocity: Vector2
-var player_jumps: int
 var win_streak := 0
-var player_position: Vector2
 var vibrating := OS.has_touchscreen_ui_hint()
 var tmp_seed := false
+var difficulty := CASUAL
 
 
 func _ready():
@@ -26,25 +25,45 @@ func _ready():
 func get_seed():
 	if not tmp_seed:
 		current_seed = randi()
-		tmp_seed = false
+	tmp_seed = false
 	return current_seed
 
 
+func load_level(replay: Replay = null):
+	# warning-ignore-all:return_value_discarded
+	if replay != null:
+		current_seed = replay.level_seed
+		difficulty = replay.difficulty
+		tmp_seed = true
+	
+	if is_equal_approx(difficulty, AMATEUR):
+		get_tree().change_scene("res://levels/amateur.tscn")
+	elif is_equal_approx(difficulty, PROFESSIONAL):
+		get_tree().change_scene("res://levels/professional.tscn")
+	elif is_equal_approx(difficulty, GRANDMASTER):
+		get_tree().change_scene("res://levels/grandmaster.tscn")
+	else:
+		get_tree().change_scene("res://levels/casual.tscn")
+	
+	yield(get_tree(), "idle_frame")
+	if replay != null:
+		get_tree().current_scene.replay(replay)
+		return
+	Replays.reset()
+
+
 func lost():
-	get_tree().change_scene(get_tree().current_scene.filename)
-	if not started: return
+	# warning-ignore:return_value_discarded
 	win_streak = 0
-	var current_time := OS.get_system_time_secs()
-	_start_time = current_time
+	get_tree().change_scene(get_tree().current_scene.filename)
 	Replays.reset()
 
 
 func won():
-	get_tree().change_scene(get_tree().current_scene.filename)
-	if not started: return
+	# warning-ignore:return_value_discarded
 	win_streak += 1
-	var current_time := OS.get_system_time_secs()
-	_start_time = current_time
+	get_tree().change_scene(get_tree().current_scene.filename)
+	# warning-ignore:return_value_discarded
 	Replays.save_replay()
 	yield(get_tree(), "idle_frame")
 	Replays.reset()

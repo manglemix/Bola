@@ -1,0 +1,112 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://ui/back_button.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/jump_icon.tscn" type="PackedScene" id=4]
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends CanvasLayer
+
+
+const JUMP_ICON_FADE := 0.5
+
+var jumps := 0
+
+onready var jump_icon1: Node2D = $VBoxContainer/HBoxContainer/Control/JumpIcon
+onready var jump_icon2: Node2D = $VBoxContainer/HBoxContainer/Control/JumpIcon2
+
+
+func replay(_replay):
+	$VBoxContainer/HBoxContainer2/Label.queue_free()
+	$VBoxContainer/HBoxContainer2/Label2.queue_free()
+
+
+func reset():
+	jump_icon1.modulate.a = 1
+	jump_icon2.modulate.a = 1
+	jumps = 0
+
+
+func jump(_null=null):
+	jumps += 1
+	if jumps == 1:
+		jump_icon2.modulate.a = JUMP_ICON_FADE
+	else:
+		jump_icon1.modulate.a = JUMP_ICON_FADE
+"
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=5]
+default_font = SubResource( 4 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Label
+
+
+func _ready():
+	text = str(GameState.win_streak)
+"
+
+[node name="GameplayHUD" type="CanvasLayer"]
+script = SubResource( 6 )
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_left = 30.0
+margin_top = 20.0
+margin_right = -20.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 217.0
+margin_bottom = 75.0
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 75.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 75, 75 )
+
+[node name="BackButton" parent="VBoxContainer/HBoxContainer2/Control" instance=ExtResource( 3 )]
+margin_left = 75.0
+margin_top = 73.0
+margin_right = 175.0
+margin_bottom = 173.0
+rect_rotation = 180.0
+rect_scale = Vector2( 0.75, 0.75 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 79.0
+margin_top = 22.0
+margin_right = 102.0
+margin_bottom = 52.0
+theme = SubResource( 5 )
+text = "0"
+script = SubResource( 3 )
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 106.0
+margin_top = 22.0
+margin_right = 217.0
+margin_bottom = 52.0
+theme = SubResource( 5 )
+text = " Streak"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 221.0
+margin_right = 550.0
+margin_bottom = 75.0
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_left = 329.0
+margin_right = 329.0
+margin_bottom = 75.0
+
+[node name="JumpIcon" parent="VBoxContainer/HBoxContainer/Control" instance=ExtResource( 4 )]
+position = Vector2( -100, 41 )
+
+[node name="JumpIcon2" parent="VBoxContainer/HBoxContainer/Control" instance=ExtResource( 4 )]
+position = Vector2( -40, 42 )

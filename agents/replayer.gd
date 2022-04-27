@@ -6,17 +6,15 @@ signal invalid_move
 
 var jump_times: Array
 var jump_enums: Array
-var collisions: Array
 
 var global_position: Vector2
 var linear_velocity: Vector2
 
 
-func _ready():
-	var jump_log := Replays.logs
+func load_replay(replay: Replay):
+	var jump_log := replay.logs
 	jump_times = jump_log.keys()
 	jump_enums = jump_log.values()
-	collisions = Replays.collision_logs.duplicate()
 
 
 func poll_mutation(_delta: float, ball):
@@ -58,10 +56,10 @@ func poll_mutation(_delta: float, ball):
 
 
 func origin_check(new_origin: Vector2):
-	prints("o", new_origin.distance_to(global_position))
+#	prints("o", new_origin.distance_to(global_position))
 	return new_origin.distance_to(global_position) > 0.15
 
 
 func velocity_check(new_vel: Vector2):
-	prints("v", new_vel.distance_to(linear_velocity))
+#	prints("v", new_vel.distance_to(linear_velocity))
 	return new_vel.distance_to(linear_velocity) > 0.15
