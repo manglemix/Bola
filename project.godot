@@ -140,6 +140,12 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/driver/driver_name="GLES2"
-misc/mesh_storage/split_stream=true
+threads/thread_safe_bvh=true
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+quality/depth_prepass/enable=false
+quality/skinning/force_software_skinning=true
+gles2/compatibility/disable_half_float=true
 environment/default_clear_color=Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
