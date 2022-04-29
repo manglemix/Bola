@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Quicksand_Book.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Quicksand_Bold.otf" type="DynamicFontData" id=2]
@@ -10,6 +10,14 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="Theme" id=5]
 default_font = SubResource( 4 )
+
+[sub_resource type="GDScript" id=14]
+script/source = "extends Label
+
+
+func _ready():
+	text = JavaScript.eval(\"Itch\", true)
+"
 
 [sub_resource type="DynamicFont" id=6]
 size = 48
@@ -104,6 +112,7 @@ margin_bottom = 424.0
 theme = SubResource( 5 )
 text = "BOLA"
 align = 1
+script = SubResource( 14 )
 
 [node name="Control" type="Control" parent="CanvasLayer/VBoxContainer"]
 margin_top = 428.0
